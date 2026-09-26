@@ -3,10 +3,11 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import type { Session } from "@supabase/supabase-js";
 import { toast } from "sonner";
-import { ArrowLeft, LogOut, Plus, Save, Trash2, Upload } from "lucide-react";
+import { ArrowLeft, BriefcaseBusiness, FolderKanban, GraduationCap, LogOut, Plus, Save, Sparkles, Trash2, Upload, UserRound } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { portfolioQuery, projectImage, type Profile } from "@/lib/portfolio";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/admin-user")({
   head: () => ({
@@ -15,6 +16,8 @@ export const Route = createFileRoute("/admin-user")({
       { name: "description", content: "Manage portfolio content." },
       { property: "og:title", content: "Admin — Kailash Portfolio" },
       { property: "og:description", content: "Manage portfolio content." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
       { name: "robots", content: "noindex" },
     ],
   }),
@@ -52,18 +55,18 @@ function AdminPage() {
   return (
     <div className="min-h-screen">
       <header className="sticky top-0 z-40 border-b border-border bg-glass backdrop-blur-xl">
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-5 py-3">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-3">
           <Link to="/" className="flex items-center gap-2 text-sm font-medium text-primary"><ArrowLeft className="h-4 w-4" />Portfolio</Link>
-          <span className="font-semibold">Admin</span>
+          <span className="font-semibold">Portfolio studio</span>
           <div className="flex items-center gap-2">
             <ThemeToggle />
             {session && (
-              <button aria-label="Sign out" onClick={() => supabase.auth.signOut()} className="rounded-full p-2 hover:bg-secondary"><LogOut className="h-4 w-4" /></button>
+              <Button variant="ghost" size="icon" title="Sign out" aria-label="Sign out" onClick={() => supabase.auth.signOut()}><LogOut className="h-4 w-4" /></Button>
             )}
           </div>
         </div>
       </header>
-      <main className="mx-auto max-w-5xl px-5 py-8">
+      <main className="mx-auto max-w-7xl px-5 py-8">
         {!ready ? null : !session ? (
           <AuthCard />
         ) : isAdmin === null ? (
@@ -108,17 +111,43 @@ function AuthCard() {
   );
 }
 
-const TABS = ["Profile", "Projects", "Skills", "Experience", "Education"] as const;
+const TABS = [
+  { label: "Profile", icon: UserRound, key: "profile" },
+  { label: "Projects", icon: FolderKanban, key: "projects" },
+  { label: "Skills", icon: Sparkles, key: "skills" },
+  { label: "Experience", icon: BriefcaseBusiness, key: "experiences" },
+  { label: "Education", icon: GraduationCap, key: "education" },
+] as const;
+type AdminTab = (typeof TABS)[number]["label"];
 
 function Dashboard() {
-  const [tab, setTab] = useState<(typeof TABS)[number]>("Profile");
+  const [tab, setTab] = useState<AdminTab>("Profile");
+  const { data } = useQuery(portfolioQuery);
   return (
-    <div>
-      <div className="mb-6 inline-flex flex-wrap gap-1 rounded-full bg-secondary p-1">
-        {TABS.map((t) => (
-          <button key={t} onClick={() => setTab(t)} className={`rounded-full px-4 py-1.5 text-sm font-medium transition-all ${tab === t ? "bg-card shadow-card" : "text-muted-foreground"}`}>{t}</button>
-        ))}
-      </div>
+    <div className="grid gap-8 md:grid-cols-[13rem_minmax(0,1fr)] lg:grid-cols-[15rem_minmax(0,1fr)]">
+      <aside className="min-w-0 md:sticky md:top-24 md:self-start">
+        <div className="mb-5 hidden px-3 md:block">
+          <p className="text-xs font-semibold uppercase text-muted-foreground">Workspace</p>
+          <p className="mt-1 text-lg font-semibold">Content</p>
+        </div>
+        <nav aria-label="Admin sections" className="flex gap-1 overflow-x-auto border-b border-border pb-3 md:flex-col md:overflow-visible md:border-b-0 md:pb-0">
+          {TABS.map(({ label, icon: Icon, key }) => (
+            <Button key={label} type="button" variant="ghost" onClick={() => setTab(label)} aria-current={tab === label ? "page" : undefined}
+              className={`h-11 shrink-0 justify-start gap-3 rounded-md px-3 text-sm md:w-full ${tab === label ? "bg-primary/10 font-semibold text-primary hover:bg-primary/10 hover:text-primary" : "text-muted-foreground"}`}>
+              <Icon className="h-4 w-4" />{label}
+              {key !== "profile" && <span className="ml-auto hidden text-xs font-normal opacity-70 md:inline">{data?.[key]?.length ?? 0}</span>}
+            </Button>
+          ))}
+        </nav>
+        <div className="mt-8 hidden border-t border-border px-3 pt-5 text-xs text-muted-foreground md:block">
+          {data?.profile?.name}
+        </div>
+      </aside>
+      <section className="min-w-0">
+        <div className="mb-6 border-b border-border pb-5">
+          <p className="text-xs font-semibold uppercase text-primary">Portfolio studio</p>
+          <h1 className="mt-1 text-3xl font-semibold">{tab}</h1>
+        </div>
       {tab === "Profile" && <ProfileEditor />}
       {tab === "Projects" && (
         <ListEditor
@@ -148,6 +177,7 @@ function Dashboard() {
       {tab === "Education" && (
         <ListEditor table="education" blank={{ degree: "Degree", school: "", year: "" }} fields={[["degree", "Degree", "text"], ["school", "School", "text"], ["year", "Year", "text"]]} />
       )}
+      </section>
     </div>
   );
 }
@@ -199,7 +229,7 @@ function ProfileEditor() {
       </div>
       {f("tagline", "Headline")}
       {f("summary", "About / summary", true)}
-      <button onClick={save} className={`${btn} bg-primary text-primary-foreground`}><Save className="h-4 w-4" />Save profile</button>
+      <Button onClick={save}><Save className="h-4 w-4" />Save profile</Button>
     </div>
   );
 }
@@ -223,7 +253,7 @@ function ListEditor({ table, blank, fields }: { table: Table; blank: Record<stri
   return (
     <div className="space-y-4">
       {rows.map((r) => <RowCard key={r.id} table={table} row={r} fields={fields} onDone={refresh} />)}
-      <button onClick={add} className={`${btn} bg-foreground text-background`}><Plus className="h-4 w-4" />Add</button>
+      <Button onClick={add}><Plus className="h-4 w-4" />Add {table === "projects" ? "project" : "item"}</Button>
     </div>
   );
 }
@@ -268,9 +298,10 @@ function RowCard({ table, row, fields, onDone }: { table: Table; row: Row; field
             )}
             {type === "image" && (
               <div className="flex items-center gap-3">
-                {projectImage({ image_url: v as string | null, url: (r["url"] as string) ?? null }) && (
-                  <img src={projectImage({ image_url: v as string | null, url: (r["url"] as string) ?? null })!} alt="" className="h-16 w-28 rounded-xl object-cover object-top" />
-                )}
+                {(() => {
+                  const image = projectImage({ image_url: v as string | null, url: (r["url"] as string) ?? null });
+                  return image ? <img src={image} alt="" className="h-16 w-28 rounded-md object-cover object-top" /> : null;
+                })()}
                 <span className={`${btn} cursor-pointer bg-secondary`}>
                   <Upload className="h-4 w-4" />Upload
                   <input type="file" accept="image/*" className="hidden" onChange={async (e) => {
@@ -291,8 +322,8 @@ function RowCard({ table, row, fields, onDone }: { table: Table; row: Row; field
           <input type="number" className={`${input} w-20`} value={r.sort_order} onChange={(e) => set("sort_order", Number(e.target.value))} />
         </label>
         <div className="ml-auto flex gap-2">
-          <button onClick={del} className={`${btn} text-destructive hover:bg-secondary`}><Trash2 className="h-4 w-4" /></button>
-          <button onClick={save} className={`${btn} bg-primary text-primary-foreground`}><Save className="h-4 w-4" />Save</button>
+           <Button onClick={del} variant="ghost" size="icon" title="Delete item" aria-label="Delete item" className="text-destructive"><Trash2 className="h-4 w-4" /></Button>
+           <Button onClick={save}><Save className="h-4 w-4" />Save</Button>
         </div>
       </div>
     </div>
