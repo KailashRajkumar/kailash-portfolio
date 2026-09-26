@@ -33,6 +33,6 @@ export const portfolioQuery = queryOptions({
 
 export function projectImage(p: Pick<Project, "image_url" | "url">) {
   if (p.image_url) return p.image_url;
-  if (p.url) return `https://image.thum.io/get/width/1200/crop/760/noanimate/${p.url}`;
+  if (p.url) return `https://s0.wp.com/mshots/v1/${encodeURIComponent(p.url)}?w=1200&h=760`;
   return null;
 }
