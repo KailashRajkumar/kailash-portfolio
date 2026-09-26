@@ -8,7 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { portfolioQuery, projectImage, type Profile } from "@/lib/portfolio";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
-export const Route = createFileRoute("/admin")({
+export const Route = createFileRoute("/admin-user")({
   head: () => ({
     meta: [
       { title: "Admin — Kailash Portfolio" },
@@ -89,7 +89,7 @@ function AuthCard() {
     const { data, error } =
       mode === "in"
         ? await supabase.auth.signInWithPassword({ email, password })
-        : await supabase.auth.signUp({ email, password, options: { emailRedirectTo: `${window.location.origin}/admin` } });
+        : await supabase.auth.signUp({ email, password, options: { emailRedirectTo: `${window.location.origin}/admin-user` } });
     setBusy(false);
     if (error) { toast.error(error.message); return; }
     if (mode === "up" && !data.session) toast.success("Check your email to confirm your account.");
