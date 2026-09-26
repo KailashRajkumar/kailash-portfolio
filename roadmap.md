@@ -3,3 +3,5 @@
 - [x] Correct Liberty Markets and trading-infrastructure details; add the Liberty Markets image.
 - [x] Add the three requested lead/business projects and verify the portfolio.
 - [x] Add ProFX Summit, ProFX Expo Africa, and ProFX League with accurate links and descriptions.
+- [ ] Rework the home opening around Kailash's portrait and broader business, CRM, mobile, and secure AI-assisted services.
+- [ ] Replace the text-only scroller with accurate technology logos and verify desktop/mobile.
