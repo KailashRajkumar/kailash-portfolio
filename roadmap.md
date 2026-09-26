@@ -7,5 +7,5 @@
 - [x] Replace the text-only scroller with accurate technology logos and verify desktop/mobile.
 - [x] Speed up first render and correct the hero and content layout on small screens.
 - [x] Add project visibility, bulk ordering and bulk deletion in admin; verify signed-in and public views.
-- [ ] Show matching loading placeholders throughout the home page.
-- [ ] Back up the completed main branch as v1 after GitHub sync is available.
+- [x] Show matching loading placeholders throughout the home page.
+- [ ] Back up the completed main branch as v1 after GitHub sync is available (blocked: this builder platform project is not connected to the requested GitHub repository).
