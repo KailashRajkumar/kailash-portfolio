@@ -162,7 +162,6 @@ function Dashboard() {
             ["tags", "Tags (comma separated)", "list"],
             ["image_url", "Image", "image"],
             ["featured", "Featured", "bool"],
-             ["active", "Active on portfolio", "bool"],
           ]}
         />
       )}
@@ -285,6 +284,14 @@ function ListEditor({ table, blank, fields }: { table: Table; blank: Record<stri
     toast.success("Selected projects deleted");
     setSelected([]); refresh();
   };
+  const toggleActive = async (id: string, active: boolean) => {
+    setBusy(true);
+    const { error } = await supabase.from("projects").update({ active }).eq("id", id);
+    setBusy(false);
+    if (error) { toast.error(error.message); return; }
+    toast.success(active ? "Project activated" : "Project deactivated");
+    refresh();
+  };
 
   const add = async () => {
     const sort_order = (rows.at(-1)?.sort_order ?? 0) + 1;
@@ -309,7 +316,8 @@ function ListEditor({ table, blank, fields }: { table: Table; blank: Record<stri
       {orderedRows.map((r, index) => <div key={r.id} className="min-w-0">
         {table === "projects" && <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 border-b border-border bg-secondary px-3 py-2">
            <label className="flex min-w-0 items-center gap-2 text-sm font-medium"><input type="checkbox" className="h-4 w-4 shrink-0 accent-primary" aria-label={`Select ${r['title']}`} checked={selected.includes(r.id)} onChange={(e) => setSelected(e.target.checked ? [...selected, r.id] : selected.filter((id) => id !== r.id))} /><span className="truncate">{index + 1}. {String(r['title'])}</span>{r['active'] === false && <span className="shrink-0 text-xs text-muted-foreground">Inactive</span>}</label>
-          <div className="flex shrink-0 gap-1">
+           <div className="flex shrink-0 items-center gap-1">
+            <Switch checked={r['active'] !== false} disabled={busy} onCheckedChange={(checked) => toggleActive(r.id, checked)} aria-label={`${r['active'] === false ? "Activate" : "Deactivate"} ${r['title']}`} title={r['active'] === false ? "Activate project" : "Deactivate project"} className="mr-2" />
             <Button size="icon" variant="ghost" className="h-8 w-8" aria-label={`Move ${r['title']} up`} title="Move up" disabled={index === 0 || busy} onClick={() => shift(r.id, -1)}><ArrowUp className="h-4 w-4" /></Button>
             <Button size="icon" variant="ghost" className="h-8 w-8" aria-label={`Move ${r['title']} down`} title="Move down" disabled={index === orderedRows.length - 1 || busy} onClick={() => shift(r.id, 1)}><ArrowDown className="h-4 w-4" /></Button>
           </div>

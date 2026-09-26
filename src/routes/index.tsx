@@ -97,10 +97,10 @@ function Hero() {
   return (
     <section id="top" className="relative isolate overflow-hidden border-b border-border bg-background pt-28 sm:pt-32">
        <div className="relative mx-auto flex max-w-7xl flex-col items-center px-5 pb-8 text-center sm:px-8 lg:min-h-[610px] lg:flex-row-reverse lg:items-end lg:gap-8 lg:pb-0 lg:text-left">
-         <motion.div initial={{ opacity: 0, x: 28 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }} className="relative mb-5 h-[170px] w-[170px] shrink-0 overflow-hidden rounded-full border-[6px] border-card shadow-card sm:h-[260px] sm:w-[260px] lg:mb-0 lg:h-[min(42vw,520px)] lg:w-[min(42vw,520px)] lg:rounded-none lg:border-0 lg:shadow-none">
+         <div className="relative mb-5 h-[170px] w-[170px] shrink-0 overflow-hidden rounded-full border-[6px] border-card shadow-card sm:h-[260px] sm:w-[260px] lg:mb-0 lg:h-[min(42vw,520px)] lg:w-[min(42vw,520px)] lg:rounded-none lg:border-0 lg:shadow-none">
           <img src={portrait.url} alt="Kailash Rajkumar" width="400" height="400" fetchPriority="high" className="h-full w-full object-cover object-top lg:object-contain lg:object-bottom" />
-        </motion.div>
-         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.65 }} className="relative z-10 min-w-0 max-w-[640px] lg:flex-1 lg:pb-20">
+         </div>
+         <div className="relative z-10 min-w-0 max-w-[640px] lg:flex-1 lg:pb-20">
           <p className="mb-3 inline-flex items-center gap-2 text-xs font-bold uppercase text-primary sm:mb-5 sm:text-sm">
             <span className="h-1.5 w-1.5 rounded-full bg-success" />Full-stack developer · Dubai
           </p>
@@ -122,7 +122,7 @@ function Hero() {
               {p?.email && <IconLink href={`mailto:${p.email}`} label="Email"><Mail className="h-4 w-4" /></IconLink>}
             </div>
           </div>
-        </motion.div>
+         </div>
       </div>
     </section>
   );
