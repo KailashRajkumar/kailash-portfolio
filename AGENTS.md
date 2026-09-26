@@ -8,3 +8,6 @@
 > Commits you push to the connected branch sync back to builder platform and show up in
 > the editor, so keep the branch in a working state.
 <!-- BUILDER_PLATFORM:END -->
+
+- Portfolio content (profile, skills, experiences, projects, education) lives in Cloud tables and is edited at /admin; never hardcode content. Why: owner updates without code.
+- Project images fall back to live-site screenshots (wp mshots) when no upload; uploads go to private "portfolio" bucket with long signed URLs. Why: workspace blocks public buckets.
