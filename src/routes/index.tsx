@@ -56,7 +56,7 @@ function HomeSkeleton() {
         <SkeletonBar className="h-9 w-9 rounded-full" />
       </header>
       <section className="border-b border-border bg-background pt-28 sm:pt-32">
-        <div className="mx-auto flex max-w-7xl flex-col items-center px-5 pb-8 sm:px-8 lg:min-h-[610px] lg:flex-row-reverse lg:items-end lg:gap-8 lg:pb-0">
+        <div className="mx-auto flex max-w-[1600px] flex-col items-center px-4 pb-8 sm:px-6 lg:min-h-[610px] lg:flex-row-reverse lg:items-end lg:gap-8 lg:px-8 lg:pb-0">
           <SkeletonBar className="mb-5 h-[170px] w-[170px] shrink-0 rounded-full sm:h-[260px] sm:w-[260px] lg:mb-0 lg:h-[min(42vw,520px)] lg:w-[min(42vw,520px)] lg:rounded-none" />
           <div className="flex w-full max-w-[640px] flex-col items-center gap-4 lg:flex-1 lg:items-start lg:pb-20">
             <SkeletonBar className="h-5 w-48" />
@@ -84,21 +84,21 @@ function PortfolioSkeleton() {
     <div role="status" aria-label="Loading work, skills and experience">
       <span className="sr-only">Loading work, skills and experience…</span>
       <div className="overflow-hidden border-b border-border bg-card py-6">
-        <div className="mx-auto max-w-7xl space-y-4 px-6 sm:px-8"><SkeletonBar className="h-4 w-36" /><div className="flex gap-8 overflow-hidden">{[0, 1, 2, 3, 4].map((i) => <SkeletonBar key={i} className="h-8 w-36 shrink-0" />)}</div></div>
+        <div className="mx-auto max-w-[1600px] space-y-4 px-4 sm:px-6 lg:px-8"><SkeletonBar className="h-4 w-36" /><div className="flex gap-8 overflow-hidden">{[0, 1, 2, 3, 4].map((i) => <SkeletonBar key={i} className="h-8 w-36 shrink-0" />)}</div></div>
       </div>
-      <section id="work" className="mx-auto max-w-6xl px-6 py-24">
+      <section id="work" className="mx-auto max-w-[1600px] px-4 py-24 sm:px-6 lg:px-8">
         <SkeletonHeading />
         <div className="mb-8 flex gap-2">{[0, 1, 2].map((i) => <SkeletonBar key={i} className="h-8 w-20 rounded-full" />)}</div>
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">{[0, 1, 2, 3, 4, 5].map((i) => <div key={i} className="overflow-hidden rounded-md border border-border bg-card"><SkeletonBar className="aspect-[16/10] w-full rounded-none" /><div className="space-y-3 p-5"><SkeletonBar className="h-4 w-24" /><SkeletonBar className="h-6 w-3/4" /><SkeletonBar className="h-4 w-full" /><SkeletonBar className="h-4 w-5/6" /></div></div>)}</div>
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">{[0, 1, 2, 3, 4, 5, 6, 7].map((i) => <div key={i} className="overflow-hidden rounded-md border border-border bg-card"><SkeletonBar className="aspect-[16/10] w-full rounded-none" /><div className="space-y-3 p-5"><SkeletonBar className="h-4 w-24" /><SkeletonBar className="h-6 w-3/4" /><SkeletonBar className="h-4 w-full" /><SkeletonBar className="h-4 w-5/6" /></div></div>)}</div>
       </section>
-      <section id="skills" className="mx-auto max-w-6xl px-6 py-24"><SkeletonHeading /><SkeletonBar className="mb-10 h-5 w-full max-w-2xl" /><div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">{[0, 1, 2, 3, 4, 5].map((i) => <div key={i} className="space-y-5 rounded-3xl border border-border bg-card p-6"><SkeletonBar className="h-5 w-36" /><div className="flex gap-2"><SkeletonBar className="h-8 w-20" /><SkeletonBar className="h-8 w-24" /></div></div>)}</div></section>
-      <section id="experience" className="mx-auto max-w-4xl px-6 py-24"><SkeletonHeading /><div className="space-y-5 border-l border-border pl-8">{[0, 1, 2].map((i) => <div key={i} className="space-y-4 rounded-3xl border border-border bg-card p-6"><SkeletonBar className="h-6 w-2/3" /><SkeletonBar className="h-4 w-36" /><SkeletonBar className="h-4 w-full" /><SkeletonBar className="h-4 w-5/6" /></div>)}</div></section>
+      <section id="skills" className="mx-auto max-w-[1600px] px-4 py-24 sm:px-6 lg:px-8"><SkeletonHeading /><SkeletonBar className="mb-10 h-5 w-full max-w-2xl" /><div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">{[0, 1, 2, 3, 4, 5, 6, 7].map((i) => <div key={i} className="space-y-5 rounded-3xl border border-border bg-card p-6"><SkeletonBar className="h-5 w-36" /><div className="flex gap-2"><SkeletonBar className="h-8 w-20" /><SkeletonBar className="h-8 w-24" /></div></div>)}</div></section>
+      <section id="experience" className="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8"><SkeletonHeading /><div className="space-y-5 border-l border-border pl-8">{[0, 1, 2].map((i) => <div key={i} className="space-y-4 rounded-3xl border border-border bg-card p-6"><SkeletonBar className="h-6 w-2/3" /><SkeletonBar className="h-4 w-36" /><SkeletonBar className="h-4 w-full" /><SkeletonBar className="h-4 w-5/6" /></div>)}</div></section>
     </div>
   );
 }
 
 function ContactSkeleton() {
-  return <section className="mx-auto max-w-5xl px-6 py-24" role="status" aria-label="Loading contact"><div className="grid gap-10 rounded-[2rem] border border-border bg-card p-8 sm:p-12 md:grid-cols-2"><div className="space-y-4"><SkeletonBar className="h-4 w-20" /><SkeletonBar className="h-10 w-4/5" /><SkeletonBar className="h-5 w-full" /><SkeletonBar className="h-5 w-3/4" /></div><div className="space-y-3"><SkeletonBar className="h-12 w-full" /><SkeletonBar className="h-12 w-full" /><SkeletonBar className="h-36 w-full" /><SkeletonBar className="h-12 w-full" /></div></div></section>;
+  return <section className="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8" role="status" aria-label="Loading contact"><div className="grid gap-10 rounded-[2rem] border border-border bg-card p-8 sm:p-12 md:grid-cols-2"><div className="space-y-4"><SkeletonBar className="h-4 w-20" /><SkeletonBar className="h-10 w-4/5" /><SkeletonBar className="h-5 w-full" /><SkeletonBar className="h-5 w-3/4" /></div><div className="space-y-3"><SkeletonBar className="h-12 w-full" /><SkeletonBar className="h-12 w-full" /><SkeletonBar className="h-36 w-full" /><SkeletonBar className="h-12 w-full" /></div></div></section>;
 }
 
 const fadeUp = {
@@ -145,7 +145,7 @@ function Index() {
        </> : <PortfolioSkeleton />}
        <Contact />
 
-      <footer className="mx-auto flex max-w-5xl flex-col items-center justify-between gap-3 px-6 py-10 text-sm text-muted-foreground sm:flex-row">
+      <footer className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-4 py-10 text-sm text-muted-foreground sm:flex-row sm:px-6 lg:px-8">
         <span>© {new Date().getFullYear()} {p?.name}. Crafted in Dubai.</span>
       </footer>
     </div>
@@ -157,7 +157,7 @@ function Hero() {
 
   return (
     <section id="top" className="relative isolate overflow-hidden border-b border-border bg-background pt-28 sm:pt-32">
-       <div className="relative mx-auto flex max-w-7xl flex-col items-center px-5 pb-8 text-center sm:px-8 lg:min-h-[610px] lg:flex-row-reverse lg:items-end lg:gap-8 lg:pb-0 lg:text-left">
+       <div className="relative mx-auto flex max-w-[1600px] flex-col items-center px-4 pb-8 text-center sm:px-6 lg:min-h-[610px] lg:flex-row-reverse lg:items-end lg:gap-8 lg:px-8 lg:pb-0 lg:text-left">
          <div className="relative mb-5 h-[170px] w-[170px] shrink-0 overflow-hidden rounded-full border-[6px] border-card shadow-card sm:h-[260px] sm:w-[260px] lg:mb-0 lg:h-[min(42vw,520px)] lg:w-[min(42vw,520px)] lg:rounded-none lg:border-0 lg:shadow-none">
           <img src={portrait} alt="Kailash Rajkumar" width="400" height="400" fetchPriority="high" className="h-full w-full object-cover object-top lg:object-contain lg:object-bottom" />
          </div>
@@ -210,7 +210,7 @@ function Marquee({ items }: { items: string[] }) {
   if (!technologies.length) return null;
   return (
     <div className="overflow-hidden border-b border-border bg-card py-6">
-      <div className="mx-auto mb-4 max-w-7xl px-6 text-xs font-bold uppercase text-muted-foreground sm:px-8">Technologies & tools</div>
+      <div className="mx-auto mb-4 max-w-[1600px] px-4 text-xs font-bold uppercase text-muted-foreground sm:px-6 lg:px-8">Technologies & tools</div>
       <div className="flex w-max animate-marquee items-center">
         {[0, 1].map((copy) => <div key={copy} className="flex shrink-0 items-center" aria-hidden={copy === 1 ? true : undefined}>
           {technologies.map((name) => {
@@ -241,7 +241,7 @@ function Work({ projects }: { projects: Project[] }) {
   const list = cat === "All" ? projects : projects.filter((p) => p.category === cat);
 
   return (
-    <section id="work" className="mx-auto max-w-6xl px-6 py-24">
+    <section id="work" className="mx-auto max-w-[1600px] px-4 py-24 sm:px-6 lg:px-8">
       <SectionHead eyebrow="Selected work" title="Things I've built." />
       <div className="mb-8 flex flex-wrap gap-2 rounded-full">
         {cats.map((c) => (
@@ -256,7 +256,7 @@ function Work({ projects }: { projects: Project[] }) {
            </Button>
         ))}
       </div>
-      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {list.map((p, i) => (
           <ProjectCard key={p.id} p={p} i={i} />
         ))}
@@ -312,12 +312,12 @@ function Skills() {
    const { data } = useQuery(portfolioQuery);
    if (!data) return null;
   return (
-    <section id="skills" className="mx-auto max-w-6xl px-6 py-24">
+    <section id="skills" className="mx-auto max-w-[1600px] px-4 py-24 sm:px-6 lg:px-8">
       <SectionHead eyebrow="Toolkit" title="What I work with." />
       <motion.p {...fadeUp} className="mb-10 max-w-3xl text-lg leading-relaxed text-muted-foreground">
         {data.profile?.summary}
       </motion.p>
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {data.skills.map((s, i) => (
           <motion.div key={s.id} {...fadeUp} transition={{ ...fadeUp.transition, delay: (i % 3) * 0.08 }} className="rounded-3xl border border-border bg-card p-6 shadow-card">
             <h3 className="font-semibold">{s.category}</h3>
@@ -337,7 +337,7 @@ function ExperienceSection() {
    const { data } = useQuery(portfolioQuery);
    if (!data) return null;
   return (
-    <section id="experience" className="mx-auto max-w-4xl px-6 py-24">
+    <section id="experience" className="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
       <SectionHead eyebrow="Journey" title="Experience." />
       <div className="relative space-y-5 border-l border-border pl-8">
         {data.experiences.map((e) => (
@@ -396,7 +396,7 @@ function Contact() {
   const field = "w-full rounded-2xl border border-input bg-background px-4 py-3 text-sm outline-none transition-shadow focus:ring-2 focus:ring-ring";
 
   return (
-    <section id="contact" className="mx-auto max-w-5xl px-6 py-24">
+    <section id="contact" className="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
       <motion.div {...fadeUp} className="relative overflow-hidden rounded-[2rem] border border-border bg-card p-8 shadow-card sm:p-12">
         <div className="absolute inset-0 bg-hero opacity-60" aria-hidden />
         <div className="relative grid gap-10 md:grid-cols-2">
