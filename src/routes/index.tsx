@@ -27,6 +27,7 @@ const DESC =
   "Kailash Rajkumar builds business websites, custom CRM platforms, and mobile apps with Flutter and React Native, using secure AI-assisted workflows.";
 
 export const Route = createFileRoute("/")({
+  loader: async ({ context }) => await context.queryClient.ensureQueryData(profileQuery),
   head: ({ loaderData }) => ({
     meta: [
       { title: TITLE },
@@ -39,7 +40,6 @@ export const Route = createFileRoute("/")({
       { name: "twitter:image", content: loaderData?.avatar_url || "https://kailash-showcase-hub.lovable.app/portrait-share.jpg" },
     ],
   }),
-  loader: ({ context }) => context.queryClient.ensureQueryData(profileQuery),
   pendingMs: 0,
   pendingComponent: HomeSkeleton,
   component: Index,
