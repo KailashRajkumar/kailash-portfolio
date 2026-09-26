@@ -252,7 +252,7 @@ function ProjectCard({ p, i }: { p: Project; i: number }) {
             <ArrowUpRight className="h-4 w-4" />
           </span>
         </div>
-        <p className="mt-2 line-clamp-3 text-sm text-muted-foreground">{p.description}</p>
+        <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{p.description}</p>
         <div className="mt-auto flex flex-wrap gap-1.5 pt-4">
           {p.tags.map((t) => (
             <span key={t} className="rounded-full bg-accent px-2.5 py-0.5 text-[11px] font-medium text-accent-foreground">{t}</span>
