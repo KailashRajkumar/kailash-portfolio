@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
 import { motion } from "motion/react";
 import { useMemo, useState } from "react";
 import { siReact, siJavascript, siTailwindcss, siLaravel, siPython, siPostgresql, siFlutter, siTypescript, siWordpress, siMysql, siMongodb, siVite, siFigma, sidevelopment tooling, siGit, type SimpleIcon } from "simple-icons";
@@ -16,7 +16,7 @@ import {
   MessageCircle,
   Send,
 } from "lucide-react";
-import { portfolioQuery, projectImage, type Project } from "@/lib/portfolio";
+import { portfolioQuery, profileQuery, projectImage, type Project } from "@/lib/portfolio";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { Button } from "@/components/ui/button";
 import portrait from "@/assets/kailash-portrait.png.asset.json";
@@ -36,7 +36,7 @@ export const Route = createFileRoute("/")({
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
-  loader: ({ context }) => context.queryClient.ensureQueryData(portfolioQuery),
+  loader: ({ context }) => context.queryClient.ensureQueryData(profileQuery),
   component: Index,
 });
 
@@ -55,8 +55,8 @@ const NAV = [
 ] as const;
 
 function Index() {
-  const { data } = useSuspenseQuery(portfolioQuery);
-  const p = data.profile;
+  const { data: p } = useSuspenseQuery(profileQuery);
+  const { data } = useQuery(portfolioQuery);
   const first = p?.name.split(" ")[0] ?? "Kailash";
 
   return (
@@ -76,11 +76,13 @@ function Index() {
       </header>
 
       <Hero />
-      <Marquee items={data.skills.flatMap((s) => s.items)} />
-      <Work projects={data.projects} />
-      <Skills />
-      <ExperienceSection />
-      <Contact />
+       {data ? <>
+         <Marquee items={data.skills.flatMap((s) => s.items)} />
+         <Work projects={data.projects.filter((project) => project.active)} />
+         <Skills />
+         <ExperienceSection />
+       </> : <div className="mx-auto max-w-6xl px-6 py-16" aria-label="Loading portfolio"><div className="h-8 w-40 animate-pulse rounded bg-secondary" /><div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">{[0, 1, 2].map((i) => <div key={i} className="aspect-[4/3] animate-pulse rounded-md bg-secondary" />)}</div></div>}
+       <Contact />
 
       <footer className="mx-auto flex max-w-5xl flex-col items-center justify-between gap-3 px-6 py-10 text-sm text-muted-foreground sm:flex-row">
         <span>© {new Date().getFullYear()} {p?.name}. Crafted in Dubai.</span>
@@ -90,20 +92,19 @@ function Index() {
 }
 
 function Hero() {
-  const { data } = useSuspenseQuery(portfolioQuery);
-  const p = data.profile;
+  const { data: p } = useSuspenseQuery(profileQuery);
 
   return (
     <section id="top" className="relative isolate overflow-hidden border-b border-border bg-background pt-28 sm:pt-32">
-      <div className="relative mx-auto flex max-w-7xl flex-col justify-end px-6 pb-8 sm:px-8 lg:min-h-[660px] lg:justify-center lg:pb-20">
-        <motion.div initial={{ opacity: 0, x: 28 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }} className="relative mx-auto mb-3 h-[165px] w-[165px] overflow-hidden rounded-full border-[6px] border-card shadow-card sm:h-[290px] sm:w-[290px] lg:absolute lg:bottom-0 lg:right-0 lg:mb-0 lg:h-[min(44vw,560px)] lg:w-[min(44vw,560px)] lg:rounded-none lg:border-0 lg:shadow-none">
+       <div className="relative mx-auto flex max-w-7xl flex-col items-center px-5 pb-8 text-center sm:px-8 lg:min-h-[610px] lg:flex-row-reverse lg:items-end lg:gap-8 lg:pb-0 lg:text-left">
+         <div className="relative mb-5 h-[170px] w-[170px] shrink-0 overflow-hidden rounded-full border-[6px] border-card shadow-card sm:h-[260px] sm:w-[260px] lg:mb-0 lg:h-[min(42vw,520px)] lg:w-[min(42vw,520px)] lg:rounded-none lg:border-0 lg:shadow-none">
           <img src={portrait.url} alt="Kailash Rajkumar" width="400" height="400" fetchPriority="high" className="h-full w-full object-cover object-top lg:object-contain lg:object-bottom" />
-        </motion.div>
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.65 }} className="relative z-10 max-w-[640px] lg:w-[57%]">
+         </div>
+         <div className="relative z-10 min-w-0 max-w-[640px] lg:flex-1 lg:pb-20">
           <p className="mb-3 inline-flex items-center gap-2 text-xs font-bold uppercase text-primary sm:mb-5 sm:text-sm">
             <span className="h-1.5 w-1.5 rounded-full bg-success" />Full-stack developer · Dubai
           </p>
-          <h1 className="font-display text-[2.65rem] font-extrabold leading-[1.05] sm:text-7xl lg:text-[clamp(4rem,5.5vw,5.5rem)]">
+           <h1 className="font-display text-4xl font-extrabold leading-[1.08] sm:text-6xl lg:text-6xl xl:text-7xl">
             Kailash <span className="block text-primary">Rajkumar</span>
           </h1>
           <p className="mt-4 max-w-[580px] text-base leading-relaxed text-muted-foreground sm:mt-6 sm:text-xl">
@@ -112,7 +113,7 @@ function Hero() {
           <p className="mt-3 max-w-[580px] text-sm leading-relaxed text-foreground/80 sm:mt-4 sm:text-base">
             From business websites to all-in-one CRMs and Flutter or React Native apps. I use development tooling and development tooling to move faster while keeping client work secure.
           </p>
-          <div className="mt-5 flex flex-wrap items-center gap-2 sm:mt-8 sm:gap-3">
+           <div className="mt-5 flex flex-wrap items-center justify-center gap-2 sm:mt-8 sm:gap-3 lg:justify-start">
             <Button asChild size="lg" className="h-12 rounded-md px-6 text-sm font-semibold"><a href="#contact">Start a project <ArrowUpRight className="h-4 w-4" /></a></Button>
             <Button asChild variant="outline" size="lg" className="h-12 rounded-md px-6 text-sm font-semibold"><a href="#work">View my work</a></Button>
             <div className="flex gap-2 sm:ml-2">
@@ -121,7 +122,7 @@ function Hero() {
               {p?.email && <IconLink href={`mailto:${p.email}`} label="Email"><Mail className="h-4 w-4" /></IconLink>}
             </div>
           </div>
-        </motion.div>
+         </div>
       </div>
     </section>
   );
@@ -183,13 +184,15 @@ function Work({ projects }: { projects: Project[] }) {
       <SectionHead eyebrow="Selected work" title="Things I've built." />
       <div className="mb-8 flex flex-wrap gap-2 rounded-full">
         {cats.map((c) => (
-          <button
+           <Button
             key={c}
             onClick={() => setCat(c)}
-            className={`rounded-full px-4 py-1.5 text-sm font-medium transition-all ${cat === c ? "bg-foreground text-background" : "bg-card text-muted-foreground hover:text-foreground"}`}
+             variant={cat === c ? "default" : "secondary"}
+             size="sm"
+             className="rounded-full px-4 text-sm"
           >
             {c}
-          </button>
+           </Button>
         ))}
       </div>
       <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -203,7 +206,6 @@ function Work({ projects }: { projects: Project[] }) {
 
 function ProjectCard({ p, i }: { p: Project; i: number }) {
   const img = projectImage(p);
-  const big = p.featured && i < 2;
   return (
     <motion.a
       href={p.url ?? undefined}
@@ -214,11 +216,11 @@ function ProjectCard({ p, i }: { p: Project; i: number }) {
       viewport={{ once: true, margin: "-60px" }}
       transition={{ duration: 0.5, delay: (i % 3) * 0.08 }}
       whileHover={{ y: -6 }}
-      className={`group flex flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-card ${big ? "lg:col-span-1 sm:col-span-1" : ""}`}
+       className="group flex min-w-0 flex-col overflow-hidden rounded-md border border-border bg-card shadow-card"
     >
       <div className="relative aspect-[16/10] overflow-hidden bg-secondary">
         {img && (
-          <img src={img} alt={`${p.title} preview`} loading="lazy" className="h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-105" />
+           <img src={img} alt={`${p.title} preview`} loading="lazy" decoding="async" width="480" height="300" className="h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-105" />
         )}
         {p.featured && (
           <span className="absolute left-3 top-3 rounded-full bg-glass px-2.5 py-1 text-[11px] font-semibold backdrop-blur">Featured</span>
@@ -246,7 +248,8 @@ function ProjectCard({ p, i }: { p: Project; i: number }) {
 }
 
 function Skills() {
-  const { data } = useSuspenseQuery(portfolioQuery);
+   const { data } = useQuery(portfolioQuery);
+   if (!data) return null;
   return (
     <section id="skills" className="mx-auto max-w-6xl px-6 py-24">
       <SectionHead eyebrow="Toolkit" title="What I work with." />
@@ -270,7 +273,8 @@ function Skills() {
 }
 
 function ExperienceSection() {
-  const { data } = useSuspenseQuery(portfolioQuery);
+   const { data } = useQuery(portfolioQuery);
+   if (!data) return null;
   return (
     <section id="experience" className="mx-auto max-w-4xl px-6 py-24">
       <SectionHead eyebrow="Journey" title="Experience." />
@@ -314,8 +318,7 @@ const contactSchema = z.object({
 });
 
 function Contact() {
-  const { data } = useSuspenseQuery(portfolioQuery);
-  const p = data.profile;
+   const { data: p } = useSuspenseQuery(profileQuery);
   const wa = (p?.whatsapp || "971526635447").replace(/\D/g, "");
   const [form, setForm] = useState({ name: "", email: "", message: "" });
 
@@ -350,9 +353,9 @@ function Contact() {
             <input className={field} placeholder="Your name" maxLength={100} value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
             <input className={field} placeholder="Email address" type="email" maxLength={255} value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
             <textarea className={`${field} min-h-36 resize-none`} placeholder="Tell me about your project…" maxLength={1000} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} />
-            <button type="submit" className="flex w-full items-center justify-center gap-2 rounded-2xl bg-primary py-3.5 text-sm font-semibold text-primary-foreground transition-transform hover:scale-[1.01] active:scale-[0.98]">
+             <Button type="submit" className="flex h-12 w-full items-center justify-center gap-2 rounded-md text-sm font-semibold">
               <Send className="h-4 w-4" /> Send via WhatsApp
-            </button>
+             </Button>
           </form>
         </div>
       </motion.div>

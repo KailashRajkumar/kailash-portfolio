@@ -5,3 +5,5 @@
 - [x] Add ProFX Summit, ProFX Expo Africa, and ProFX League with accurate links and descriptions.
 - [x] Rework the home opening around Kailash's portrait and broader business, CRM, mobile, and secure AI-assisted services.
 - [x] Replace the text-only scroller with accurate technology logos and verify desktop/mobile.
+- [x] Speed up first render and correct the hero and content layout on small screens.
+- [x] Add project visibility, bulk ordering and bulk deletion in admin; verify signed-in and public views.

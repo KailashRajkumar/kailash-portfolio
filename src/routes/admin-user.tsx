@@ -3,11 +3,12 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import type { Session } from "@supabase/supabase-js";
 import { toast } from "sonner";
-import { ArrowLeft, BriefcaseBusiness, FolderKanban, GraduationCap, LogOut, Plus, Save, Sparkles, Trash2, Upload, UserRound } from "lucide-react";
+import { ArrowDown, ArrowLeft, ArrowUp, BriefcaseBusiness, FolderKanban, GraduationCap, LogOut, Plus, Save, Sparkles, Trash2, Upload, UserRound } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { portfolioQuery, projectImage, type Profile } from "@/lib/portfolio";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
 
 export const Route = createFileRoute("/admin-user")({
   head: () => ({
@@ -152,7 +153,7 @@ function Dashboard() {
       {tab === "Projects" && (
         <ListEditor
           table="projects"
-          blank={{ title: "New project", description: "", category: "Web", tags: [], url: "", image_url: null, featured: false }}
+           blank={{ title: "New project", description: "", category: "Web", tags: [], url: "", image_url: null, featured: false, active: true }}
           fields={[
             ["title", "Title", "text"],
             ["category", "Category", "text"],
@@ -242,6 +243,55 @@ function ListEditor({ table, blank, fields }: { table: Table; blank: Record<stri
   const { data } = useQuery(portfolioQuery);
   const refresh = useRefresh();
   const rows = ((data?.[table] ?? []) as unknown) as Row[];
+  const [selected, setSelected] = useState<string[]>([]);
+  const [orderedIds, setOrderedIds] = useState<string[]>([]);
+  const [busy, setBusy] = useState(false);
+  useEffect(() => { setOrderedIds(rows.map((r) => r.id)); }, [data, table]);
+  const orderedRows = table === "projects" ? orderedIds.map((id) => rows.find((r) => r.id === id)).filter((r): r is Row => !!r).concat(rows.filter((r) => !orderedIds.includes(r.id))) : rows;
+  const shift = (id: string, direction: number) => {
+    const ids = orderedRows.map((r) => r.id);
+    const at = ids.indexOf(id);
+    const next = at + direction;
+    if (next < 0 || next >= ids.length) return;
+    const current = ids[at];
+    const neighbor = ids[next];
+    if (!current || !neighbor) return;
+    ids[at] = neighbor;
+    ids[next] = current;
+    setOrderedIds(ids);
+  };
+  const saveOrder = async () => {
+    setBusy(true);
+    const results = await Promise.all(orderedRows.map((r, index) => supabase.from("projects").update({ sort_order: index + 1 }).eq("id", r.id)));
+    setBusy(false);
+    if (results.some(({ error }) => error)) { toast.error("Some positions could not be saved. Please try again."); return; }
+    toast.success("Project order saved"); refresh();
+  };
+  const bulkVisibility = async (active: boolean) => {
+    setBusy(true);
+    const { error } = await supabase.from("projects").update({ active }).in("id", selected);
+    setBusy(false);
+    if (error) { toast.error(error.message); return; }
+    toast.success(active ? "Projects activated" : "Projects deactivated");
+    setSelected([]); refresh();
+  };
+  const bulkDelete = async () => {
+    if (!confirm(`Permanently delete ${selected.length} selected project${selected.length === 1 ? "" : "s"}?`)) return;
+    setBusy(true);
+    const { error } = await supabase.from("projects").delete().in("id", selected);
+    setBusy(false);
+    if (error) { toast.error(error.message); return; }
+    toast.success("Selected projects deleted");
+    setSelected([]); refresh();
+  };
+  const toggleActive = async (id: string, active: boolean) => {
+    setBusy(true);
+    const { error } = await supabase.from("projects").update({ active }).eq("id", id);
+    setBusy(false);
+    if (error) { toast.error(error.message); return; }
+    toast.success(active ? "Project activated" : "Project deactivated");
+    refresh();
+  };
 
   const add = async () => {
     const sort_order = (rows.at(-1)?.sort_order ?? 0) + 1;
@@ -252,7 +302,28 @@ function ListEditor({ table, blank, fields }: { table: Table; blank: Record<stri
 
   return (
     <div className="space-y-4">
-      {rows.map((r) => <RowCard key={r.id} table={table} row={r} fields={fields} onDone={refresh} />)}
+      {table === "projects" && rows.length > 0 && <div className="space-y-3 border-b border-border pb-4">
+        <div className="flex flex-wrap items-center gap-2">
+          <label className="mr-auto flex items-center gap-2 text-sm"><input type="checkbox" aria-label="Select all projects" className="h-4 w-4 accent-primary" checked={selected.length === rows.length} onChange={(e) => setSelected(e.target.checked ? rows.map((r) => r.id) : [])} />Select all <span className="text-muted-foreground">({selected.length} selected)</span></label>
+          <Button size="sm" variant="outline" disabled={busy || !orderedRows.some((r, i) => r.id !== rows[i]?.id)} onClick={saveOrder}><Save className="h-4 w-4" />Save order</Button>
+        </div>
+        {selected.length > 0 && <div className="flex flex-wrap gap-2" aria-label="Bulk project actions">
+          <Button size="sm" variant="outline" disabled={busy} onClick={() => bulkVisibility(true)}>Activate selected</Button>
+          <Button size="sm" variant="outline" disabled={busy} onClick={() => bulkVisibility(false)}>Deactivate selected</Button>
+          <Button size="sm" variant="destructive" disabled={busy} onClick={bulkDelete}><Trash2 className="h-4 w-4" />Delete selected</Button>
+        </div>}
+      </div>}
+      {orderedRows.map((r, index) => <div key={r.id} className="min-w-0">
+        {table === "projects" && <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 border-b border-border bg-secondary px-3 py-2">
+           <label className="flex min-w-0 items-center gap-2 text-sm font-medium"><input type="checkbox" className="h-4 w-4 shrink-0 accent-primary" aria-label={`Select ${r['title']}`} checked={selected.includes(r.id)} onChange={(e) => setSelected(e.target.checked ? [...selected, r.id] : selected.filter((id) => id !== r.id))} /><span className="truncate">{index + 1}. {String(r['title'])}</span>{r['active'] === false && <span className="shrink-0 text-xs text-muted-foreground">Inactive</span>}</label>
+           <div className="flex shrink-0 items-center gap-1">
+            <Switch checked={r['active'] !== false} disabled={busy} onCheckedChange={(checked) => toggleActive(r.id, checked)} aria-label={`${r['active'] === false ? "Activate" : "Deactivate"} ${r['title']}`} title={r['active'] === false ? "Activate project" : "Deactivate project"} className="mr-2" />
+            <Button size="icon" variant="ghost" className="h-8 w-8" aria-label={`Move ${r['title']} up`} title="Move up" disabled={index === 0 || busy} onClick={() => shift(r.id, -1)}><ArrowUp className="h-4 w-4" /></Button>
+            <Button size="icon" variant="ghost" className="h-8 w-8" aria-label={`Move ${r['title']} down`} title="Move down" disabled={index === orderedRows.length - 1 || busy} onClick={() => shift(r.id, 1)}><ArrowDown className="h-4 w-4" /></Button>
+          </div>
+        </div>}
+        <RowCard table={table} row={r} fields={fields} onDone={refresh} />
+      </div>)}
       <Button onClick={add}><Plus className="h-4 w-4" />Add {table === "projects" ? "project" : "item"}</Button>
     </div>
   );
@@ -293,9 +364,7 @@ function RowCard({ table, row, fields, onDone }: { table: Table; row: Row; field
             {type === "lines" && (
               <textarea className={`${input} min-h-28`} defaultValue={((v as string[]) ?? []).join("\n")} onBlur={(e) => set(k, e.target.value.split("\n").map((s) => s.trim()).filter(Boolean))} />
             )}
-            {type === "bool" && (
-              <input type="checkbox" className="h-5 w-5 accent-primary" checked={!!v} onChange={(e) => set(k, e.target.checked)} />
-            )}
+             {type === "bool" && <Switch checked={!!v} onCheckedChange={(checked) => set(k, checked)} aria-label={label} />}
             {type === "image" && (
               <div className="flex items-center gap-3">
                 {(() => {
