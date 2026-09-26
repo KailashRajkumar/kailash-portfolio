@@ -1,4 +1,4 @@
-- [ ] Replace the admin tabs with a tidy sidebar and preserve mobile access.
-- [ ] Consolidate BridgeXApps / BridgeXSuite into one project with tenant examples and mobile apps.
-- [ ] Correct Liberty Markets and trading-infrastructure details; add the Liberty Markets image.
-- [ ] Add the three requested lead/business projects and verify the portfolio.
+- [x] Replace the admin tabs with a tidy sidebar and preserve mobile access.
+- [x] Consolidate BridgeXApps / BridgeXSuite into one project with tenant examples and mobile apps.
+- [x] Correct Liberty Markets and trading-infrastructure details; add the Liberty Markets image.
+- [x] Add the three requested lead/business projects and verify the portfolio.
