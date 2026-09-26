@@ -47,7 +47,7 @@ create policy "portfolio admin delete" on storage.objects for delete to authenti
 
 insert into public.profile (name,title,tagline,summary,location,email,phone,whatsapp,linkedin,github) values (
  'Kailash Rajkumar','Full Stack Developer','I build fintech platforms, trading infrastructure and fast, beautiful web apps.',
- 'Full Stack Developer building responsive, high-performance web applications with React, Laravel, Python and Tailwind CSS. At Bridging FX I deliver complete fintech products — broker CRMs, admin dashboards, a B2B marketplace and event platforms — and own the full delivery flow from hosting and DNS to databases and integrations. I also build trading infrastructure in Python, including an MT5 bridge and prop-firm rule-enforcement services, and use powerful AI models, technical knowledge, and integrations to ship faster.',
+ 'Full Stack Developer building responsive, high-performance web applications with React, Laravel, Python and Tailwind CSS. At Bridging FX I deliver complete fintech products - broker CRMs, admin dashboards, a B2B marketplace and event platforms - and own the full delivery flow from hosting and DNS to databases and integrations. I also build trading infrastructure in Python, including an MT5 bridge and prop-firm rule-enforcement services, and use powerful AI models, technical knowledge, and integrations to ship faster.',
  'Karama, Dubai, UAE','kailashrajkumar14@gmail.com','+971 52 663 5447','971526635447','https://linkedin.com/in/kailash-rajkumar','https://github.com/KailashRajkumar');
 
 insert into public.skills (category,items,sort_order) values
@@ -60,10 +60,10 @@ insert into public.skills (category,items,sort_order) values
 ('CMS & Tools', array['WordPress','Wix Studio','Base44','Figma'],7);
 
 insert into public.experiences (role,company,period,location,bullets,sort_order) values
-('Full Stack Developer','Bridging FX Limited','Aug 2025 — Present','Dubai, UAE', array['Built React + Laravel web apps, lifting engagement on client dashboards by 25%.','Maintained admin dashboards and client interfaces serving 500+ daily active users.','Cut page load times by 30% with modern Tailwind and Bootstrap UI.','Run hosting via cPanel/WHM: DNS, SSL, email and per-client PostgreSQL/MySQL provisioning.','Delivered 10+ production websites and platforms on schedule.'],1),
-('Freelance Web Developer','Self-employed','2025 — Present','Remote', array['WordPress site for MNV Associates and single-page corporate sites for Aji Internationals and KandyDGhana.'],2),
-('Software Developer Intern','Pixalive Technology Services','Oct 2023 — Mar 2024','Bengaluru, India', array['Built React UI components for MasterIn, Pixalive Web Services and Guide Care.','Handled Figma-to-code handoff and API/MongoDB integrations.'],3),
-('Engineering Intern — Full Stack','Skill-Lync','Nov 2022 — Feb 2023','Remote', array['Built a streaming-platform clone, a TMDB movie app and an expense tracker with React and MongoDB.'],4);
+('Full Stack Developer','Bridging FX Limited','Aug 2025 - Present','Dubai, UAE', array['Built React + Laravel web apps, lifting engagement on client dashboards by 25%.','Maintained admin dashboards and client interfaces serving 500+ daily active users.','Cut page load times by 30% with modern Tailwind and Bootstrap UI.','Run hosting via cPanel/WHM: DNS, SSL, email and per-client PostgreSQL/MySQL provisioning.','Delivered 10+ production websites and platforms on schedule.'],1),
+('Freelance Web Developer','Self-employed','2025 - Present','Remote', array['WordPress site for MNV Associates and single-page corporate sites for Aji Internationals and KandyDGhana.'],2),
+('Software Developer Intern','Pixalive Technology Services','Oct 2023 - Mar 2024','Bengaluru, India', array['Built React UI components for MasterIn, Pixalive Web Services and Guide Care.','Handled Figma-to-code handoff and API/MongoDB integrations.'],3),
+('Engineering Intern - Full Stack','Skill-Lync','Nov 2022 - Feb 2023','Remote', array['Built a streaming-platform clone, a TMDB movie app and an expense tracker with React and MongoDB.'],4);
 
 insert into public.education (degree,school,year,sort_order) values
 ('MSc, Computer Science','Hindusthan College of Arts and Science, Coimbatore','2022',1),

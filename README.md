@@ -1,4 +1,4 @@
-# Kailash Rajkumar — Portfolio
+# Kailash Rajkumar - Portfolio
 
 Personal portfolio of Kailash Rajkumar, full-stack developer in Dubai.
 
