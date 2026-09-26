@@ -2,4 +2,4 @@
 - [x] Consolidate BridgeXApps / BridgeXSuite into one project with tenant examples and mobile apps.
 - [x] Correct Liberty Markets and trading-infrastructure details; add the Liberty Markets image.
 - [x] Add the three requested lead/business projects and verify the portfolio.
-- [ ] Add ProFX Summit, ProFX Expo Africa, and ProFX League with accurate links and descriptions.
+- [x] Add ProFX Summit, ProFX Expo Africa, and ProFX League with accurate links and descriptions.
