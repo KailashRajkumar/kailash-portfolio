@@ -28,7 +28,7 @@ const DESC =
 
 export const Route = createFileRoute("/")({
   loader: async ({ context }) => await context.queryClient.ensureQueryData(profileQuery),
-  head: ({ loaderData }) => ({
+  head: () => ({
     meta: [
       { title: TITLE },
       { name: "description", content: DESC },
@@ -36,8 +36,8 @@ export const Route = createFileRoute("/")({
       { property: "og:description", content: DESC },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { property: "og:image", content: loaderData?.avatar_url || "https://kailash-showcase-hub.lovable.app/portrait-share.jpg" },
-      { name: "twitter:image", content: loaderData?.avatar_url || "https://kailash-showcase-hub.lovable.app/portrait-share.jpg" },
+      { property: "og:image", content: "https://kailashrajkumar.github.io/kailash-portfolio/portrait-share.jpg" },
+      { name: "twitter:image", content: "https://kailashrajkumar.github.io/kailash-portfolio/portrait-share.jpg" },
     ],
   }),
   pendingMs: 0,

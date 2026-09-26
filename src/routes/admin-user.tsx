@@ -229,7 +229,7 @@ function ProfileEditor() {
         <img src={p.avatar_url || portrait} alt="Current home portrait" className="h-24 w-24 rounded-full object-cover object-top" />
         <div className="space-y-2">
           <p className="text-sm font-semibold">Home portrait</p>
-          <p className="text-xs text-muted-foreground">Also used when sharing the home page.</p>
+           <p className="text-xs text-muted-foreground">Your shared-link preview currently uses the original portrait. Changing this home image does not update the shared preview automatically.</p>
           <div className="flex flex-wrap items-center gap-2">
             <label className="inline-flex cursor-pointer items-center gap-2 rounded-md bg-secondary px-3 py-2 text-sm font-medium">
               <Upload className="h-4 w-4" />{uploading ? "Uploading…" : "Choose image"}
