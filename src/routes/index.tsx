@@ -1,7 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { motion, useScroll, useTransform } from "motion/react";
-import { useMemo, useRef, useState } from "react";
+import { motion } from "motion/react";
+import { useMemo, useState } from "react";
+import { siReact, siJavascript, siTailwindcss, siLaravel, siPython, siPostgresql, siFlutter, siTypescript, siWordpress, siMysql, siMongodb, siVite, siFigma, sidevelopment tooling, siGit, type SimpleIcon } from "simple-icons";
 import { z } from "zod";
 import { toast } from "sonner";
 import {
@@ -14,14 +15,15 @@ import {
   MapPin,
   MessageCircle,
   Send,
-  Sparkles,
 } from "lucide-react";
 import { portfolioQuery, projectImage, type Project } from "@/lib/portfolio";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { Button } from "@/components/ui/button";
+import portrait from "@/assets/kailash-portrait.png.asset.json";
 
 const TITLE = "Kailash Rajkumar — Full Stack Developer in Dubai";
 const DESC =
-  "Kailash Rajkumar builds fintech platforms, broker CRMs, trading infrastructure and modern web & Flutter apps. Explore projects and get in touch.";
+  "Kailash Rajkumar builds business websites, custom CRM platforms, and mobile apps with Flutter and React Native, using secure AI-assisted workflows.";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -90,70 +92,37 @@ function Index() {
 function Hero() {
   const { data } = useSuspenseQuery(portfolioQuery);
   const p = data.profile;
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
-  const y = useTransform(scrollYProgress, [0, 1], [0, 120]);
-  const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
-  const words = (p?.tagline ?? "").split(" ");
 
   return (
-    <section id="top" ref={ref} className="relative overflow-hidden pt-36 pb-24">
-      <div className="absolute inset-0 bg-hero" aria-hidden />
-      <motion.div style={{ y, opacity }} className="relative mx-auto max-w-5xl px-6">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="inline-flex items-center gap-2 rounded-full border border-border bg-glass px-3 py-1 text-xs font-medium backdrop-blur"
-        >
-          <span className="relative flex h-2 w-2">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-success opacity-75" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-success" />
-          </span>
-          Available for freelance & full-time
+    <section id="top" className="relative isolate overflow-hidden border-b border-border bg-background pt-28 sm:pt-32">
+      <div className="relative mx-auto flex min-h-[660px] max-w-7xl flex-col justify-end px-6 pb-14 sm:px-8 lg:min-h-[660px] lg:justify-center lg:pb-20">
+        <motion.div initial={{ opacity: 0, x: 28 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }} className="relative mx-auto mb-5 h-[235px] w-[235px] overflow-hidden rounded-full border-[6px] border-card shadow-card sm:h-[290px] sm:w-[290px] lg:absolute lg:bottom-0 lg:right-0 lg:mb-0 lg:h-[min(44vw,560px)] lg:w-[min(44vw,560px)] lg:rounded-none lg:border-0 lg:shadow-none">
+          <img src={portrait.url} alt="Kailash Rajkumar" width="400" height="400" fetchPriority="high" className="h-full w-full object-cover object-top lg:object-contain lg:object-bottom" />
         </motion.div>
-        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }} className="mt-8 text-lg text-muted-foreground">
-          Hi, I'm {p?.name} — {p?.title}
-        </motion.p>
-        <h1 className="mt-3 text-5xl font-bold leading-[1.05] tracking-tight sm:text-7xl">
-          {words.map((w, i) => (
-            <motion.span
-              key={i}
-              initial={{ opacity: 0, y: 30, filter: "blur(8px)" }}
-              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              transition={{ delay: 0.15 + i * 0.05, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-              className="mr-[0.25em] inline-block"
-            >
-              {w}
-            </motion.span>
-          ))}
-        </h1>
-        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7 }} className="mt-10 flex flex-wrap items-center gap-3">
-          <a href="#work" className="rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-card transition-transform hover:scale-[1.03] active:scale-95">
-            View my work
-          </a>
-          <a href="#contact" className="rounded-full border border-border bg-card px-6 py-3 text-sm font-semibold transition-transform hover:scale-[1.03] active:scale-95">
-            Let's talk
-          </a>
-          <div className="ml-1 flex gap-2">
-            {p?.github && <IconLink href={p.github} label="GitHub"><Github className="h-4 w-4" /></IconLink>}
-            {p?.linkedin && <IconLink href={p.linkedin} label="LinkedIn"><Linkedin className="h-4 w-4" /></IconLink>}
-            {p?.email && <IconLink href={`mailto:${p.email}`} label="Email"><Mail className="h-4 w-4" /></IconLink>}
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.65 }} className="relative z-10 max-w-[640px] lg:w-[57%]">
+          <p className="mb-5 inline-flex items-center gap-2 text-xs font-bold uppercase text-primary sm:text-sm">
+            <span className="h-1.5 w-1.5 rounded-full bg-success" />Full-stack developer · Dubai
+          </p>
+          <h1 className="font-display text-5xl font-extrabold leading-[1.05] sm:text-7xl lg:text-[clamp(4rem,5.5vw,5.5rem)]">
+            Kailash <span className="block text-primary">Rajkumar</span>
+          </h1>
+          <p className="mt-6 max-w-[580px] text-lg leading-relaxed text-muted-foreground sm:text-xl">
+            {p?.tagline}
+          </p>
+          <p className="mt-4 max-w-[580px] text-sm leading-relaxed text-foreground/80 sm:text-base">
+            From business websites to all-in-one CRMs and Flutter or React Native apps. I use development tooling and development tooling to move faster while keeping client work secure.
+          </p>
+          <div className="mt-8 flex flex-wrap items-center gap-3">
+            <Button asChild size="lg" className="h-12 rounded-md px-6 text-sm font-semibold"><a href="#contact">Start a project <ArrowUpRight className="h-4 w-4" /></a></Button>
+            <Button asChild variant="outline" size="lg" className="h-12 rounded-md px-6 text-sm font-semibold"><a href="#work">View my work</a></Button>
+            <div className="flex gap-2 sm:ml-2">
+              {p?.github && <IconLink href={p.github} label="GitHub"><Github className="h-4 w-4" /></IconLink>}
+              {p?.linkedin && <IconLink href={p.linkedin} label="LinkedIn"><Linkedin className="h-4 w-4" /></IconLink>}
+              {p?.email && <IconLink href={`mailto:${p.email}`} label="Email"><Mail className="h-4 w-4" /></IconLink>}
+            </div>
           </div>
         </motion.div>
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.9 }} className="mt-16 grid grid-cols-2 gap-3 sm:grid-cols-4">
-          {[
-            [`${data.projects.length}+`, "Projects shipped"],
-            ["500+", "Daily active users"],
-            ["30%", "Faster page loads"],
-            [p?.location.split(",").pop()?.trim() || "UAE", p?.location.split(",")[0] || "Based in"],
-          ].map(([a, b]) => (
-            <div key={b} className="rounded-2xl border border-border bg-glass p-4 backdrop-blur">
-              <div className="text-2xl font-bold tracking-tight">{a}</div>
-              <div className="text-xs text-muted-foreground">{b}</div>
-            </div>
-          ))}
-        </motion.div>
-      </motion.div>
+      </div>
     </section>
   );
 }
@@ -166,17 +135,30 @@ function IconLink({ href, label, children }: { href: string; label: string; chil
   );
 }
 
+const TECHNOLOGY_MARKS: Record<string, SimpleIcon> = {
+  "React.js": siReact, "JavaScript (ES6+)": siJavascript, "Tailwind CSS": siTailwindcss,
+  "Laravel": siLaravel, Python: siPython, PostgreSQL: siPostgresql, MySQL: siMysql,
+  MongoDB: siMongodb, Flutter: siFlutter, "React Native": siReact,
+  "Advanced Tooling": sidevelopment tooling, "Git & GitHub": siGit, WordPress: siWordpress,
+  Figma: siFigma, Vite: siVite, "TypeScript": siTypescript,
+};
+
 function Marquee({ items }: { items: string[] }) {
-  if (!items.length) return null;
-  const row = [...items, ...items];
+  const technologies = Array.from(new Set(items)).filter((item) => TECHNOLOGY_MARKS[item]);
+  if (!technologies.length) return null;
   return (
-    <div className="overflow-hidden border-y border-border bg-card py-4">
-      <div className="flex w-max animate-marquee gap-8">
-        {row.map((s, i) => (
-          <span key={i} className="flex items-center gap-8 whitespace-nowrap text-sm font-medium text-muted-foreground">
-            {s} <Sparkles className="h-3 w-3 text-primary" />
-          </span>
-        ))}
+    <div className="overflow-hidden border-b border-border bg-card py-6">
+      <div className="mx-auto mb-4 max-w-7xl px-6 text-xs font-bold uppercase text-muted-foreground sm:px-8">Technologies & tools</div>
+      <div className="flex w-max animate-marquee items-center">
+        {[0, 1].map((copy) => <div key={copy} className="flex shrink-0 items-center" aria-hidden={copy === 1 ? true : undefined}>
+          {technologies.map((name) => {
+            const mark = TECHNOLOGY_MARKS[name];
+            return <span key={name} className="mx-7 flex shrink-0 items-center gap-3 whitespace-nowrap text-sm font-semibold text-foreground/75 sm:mx-10 sm:text-base">
+              {mark && <svg role="img" aria-label={`${name} logo`} viewBox="0 0 24 24" className="h-7 w-7 fill-primary sm:h-8 sm:w-8"><path d={mark.path} /></svg>}
+              {name}
+            </span>;
+          })}
+        </div>)}
       </div>
     </div>
   );
