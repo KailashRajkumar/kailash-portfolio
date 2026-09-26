@@ -29,9 +29,15 @@ export const Route = createFileRoute("/admin-user")({
   head: () => ({
     meta: [
       { title: "Admin - Kailash Portfolio" },
-      { name: "description", content: "Manage portfolio content." },
+      {
+        name: "description",
+        content: "Private portfolio management dashboard for updating profile, skills, experience, and project content.",
+      },
       { property: "og:title", content: "Admin - Kailash Portfolio" },
-      { property: "og:description", content: "Manage portfolio content." },
+      {
+        property: "og:description",
+        content: "Private portfolio management dashboard for updating profile, skills, experience, and project content.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "robots", content: "noindex" },

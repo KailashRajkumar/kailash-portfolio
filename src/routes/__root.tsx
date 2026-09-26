@@ -78,7 +78,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { title: "Kailash Rajkumar - Full Stack Developer" },
       {
         name: "description",
-        content: "Portfolio of Kailash Rajkumar, full stack developer in Dubai.",
+        content:
+          "Portfolio of Kailash Rajkumar, a Dubai-based full-stack developer for websites, CRM platforms, mobile apps, and web integrations.",
       },
       { name: "author", content: "Kailash Rajkumar" },
       { property: "og:type", content: "website" },

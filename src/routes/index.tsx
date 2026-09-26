@@ -46,7 +46,7 @@ import portrait from "@/assets/kailash-portrait.png";
 
 const TITLE = "Kailash Rajkumar - Full Stack Developer in Dubai";
 const DESC =
-  "Kailash Rajkumar builds business websites, custom CRM platforms, and mobile apps with Flutter and React Native, using secure development workflows.";
+  "Full-stack developer in Dubai building business websites, custom CRM platforms, mobile apps, integrations, and secure web solutions.";
 
 export const Route = createFileRoute("/")({
   loader: async ({ context }) => await context.queryClient.ensureQueryData(profileQuery),
