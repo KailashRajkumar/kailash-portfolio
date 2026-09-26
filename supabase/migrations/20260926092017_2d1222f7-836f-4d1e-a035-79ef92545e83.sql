@@ -47,7 +47,7 @@ create policy "portfolio admin delete" on storage.objects for delete to authenti
 
 insert into public.profile (name,title,tagline,summary,location,email,phone,whatsapp,linkedin,github) values (
  'Kailash Rajkumar','Full Stack Developer','I build fintech platforms, trading infrastructure and fast, beautiful web apps.',
- 'Full Stack Developer building responsive, high-performance web applications with React, Laravel, Python and Tailwind CSS. At Bridging FX I deliver complete fintech products — broker CRMs, admin dashboards, a B2B marketplace and event platforms — and own the full delivery flow from hosting and DNS to databases and integrations. I also build trading infrastructure in Python, including an MT5 bridge and prop-firm rule-enforcement services, and use modern development tools and secure delivery workflows to ship faster.',
+ 'Full Stack Developer building responsive, high-performance web applications with React, Laravel, Python and Tailwind CSS. At Bridging FX I deliver complete fintech products — broker CRMs, admin dashboards, a B2B marketplace and event platforms — and own the full delivery flow from hosting and DNS to databases and integrations. I also build trading infrastructure in Python, including an MT5 bridge and prop-firm rule-enforcement services, and use powerful AI models, technical knowledge, and integrations to ship faster.',
  'Karama, Dubai, UAE','kailashrajkumar14@gmail.com','+971 52 663 5447','971526635447','https://linkedin.com/in/kailash-rajkumar','https://github.com/KailashRajkumar');
 
 insert into public.skills (category,items,sort_order) values
@@ -55,7 +55,7 @@ insert into public.skills (category,items,sort_order) values
 ('Back End & Data', array['Laravel','Python','REST APIs','PostgreSQL','MySQL','MongoDB','Authentication','Admin Dashboards / CRM'],2),
 ('Trading Infrastructure', array['MT5 Bridge','Prop-Firm Rule Engine','White-Label Broker Platforms','Remote Server Ops'],3),
 ('Hosting & DevOps', array['cPanel','WHM','DNS & Domains','Database Provisioning','Git & GitHub','CI/CD'],4),
-('AI', array['Advanced Tooling','Workflow Automation','Prompt Engineering','AI CRM Plugins'],5),
+('AI', array['Powerful AI Models','Prompt Engineering','AI Integrations','AI CRM Plugins'],5),
 ('Mobile', array['Flutter','React Native'],6),
 ('CMS & Tools', array['WordPress','Wix Studio','Base44','Figma'],7);
 

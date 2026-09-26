@@ -8,7 +8,7 @@
 - [x] Speed up first render and correct the hero and content layout on small screens.
 - [x] Add project visibility, bulk ordering and bulk deletion in admin; verify signed-in and public views.
 - [x] Show matching loading placeholders throughout the home page.
-- [ ] Back up the completed main branch as v1 after GitHub sync is available (blocked: this builder platform project is not connected to the requested GitHub repository).
+- [ ] Back up the completed main branch as v1 after GitHub sync is available.
 - [x] Standardize home page gutters and remove unwanted side gaps or overflow across screen widths.
 - [x] Run a fresh SEO foundations review and share the findings.
 - [x] Tighten the home opening, give project descriptions a detail view, add editable portrait and sharing image, and refresh the favicon.

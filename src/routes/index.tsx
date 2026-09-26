@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
 import { motion } from "motion/react";
 import { useMemo, useState } from "react";
-import { siReact, siJavascript, siTailwindcss, siLaravel, siPython, siPostgresql, siFlutter, siTypescript, siWordpress, siMysql, siMongodb, siVite, siFigma, sidevelopment tooling, siGit, type SimpleIcon } from "simple-icons";
+import { siReact, siJavascript, siTailwindcss, siLaravel, siPython, siPostgresql, siFlutter, siTypescript, siWordpress, siMysql, siMongodb, siVite, siFigma, siGit, type SimpleIcon } from "simple-icons";
 import { z } from "zod";
 import { toast } from "sonner";
 import {
@@ -164,7 +164,7 @@ function Hero() {
 
   return (
     <section id="top" className="relative isolate overflow-hidden border-b border-border bg-background pt-28 sm:pt-32">
-        <div className="relative mx-auto flex max-w-[1600px] flex-col items-center px-4 pb-8 text-center sm:px-6 lg:grid lg:min-h-[610px] lg:grid-cols-2 lg:items-end lg:gap-8 lg:px-8 lg:pb-0 lg:text-left">
+        <div className="relative mx-auto flex max-w-[1600px] flex-col items-center px-4 pb-8 text-center sm:px-6 lg:grid lg:min-h-[610px] lg:grid-cols-2 lg:items-end lg:gap-0 lg:px-12 lg:pb-0 lg:text-left xl:px-16">
           <div className="relative mb-5 h-[170px] w-[170px] shrink-0 overflow-hidden rounded-full border-[6px] border-card shadow-card sm:h-[260px] sm:w-[260px] lg:col-start-2 lg:row-start-1 lg:mb-0 lg:h-[min(42vw,520px)] lg:w-[min(42vw,520px)] lg:max-w-full lg:justify-self-end lg:rounded-none lg:border-0 lg:shadow-none">
            <img src={p?.avatar_url || portrait} alt="Kailash Rajkumar" width="400" height="400" fetchPriority="high" className="h-full w-full object-cover object-top lg:object-contain lg:object-bottom" />
          </div>
@@ -179,7 +179,7 @@ function Hero() {
             {p?.tagline}
           </p>
           <p className="mt-3 max-w-[580px] text-sm leading-relaxed text-foreground/80 sm:mt-4 sm:text-base">
-            From business websites to all-in-one CRMs and Flutter or React Native apps. I use development tooling and development tooling to move faster while keeping client work secure.
+            From business websites to all-in-one CRMs and Flutter or React Native apps. I use powerful AI models, technical knowledge, and integrations to move faster while keeping client work secure.
           </p>
            <div className="mt-5 flex flex-wrap items-center justify-center gap-2 sm:mt-8 sm:gap-3 lg:justify-start">
             <Button asChild size="lg" className="h-12 rounded-md px-6 text-sm font-semibold"><a href="#contact">Start a project <ArrowUpRight className="h-4 w-4" /></a></Button>
@@ -208,7 +208,7 @@ const TECHNOLOGY_MARKS: Record<string, SimpleIcon> = {
   "React.js": siReact, "JavaScript (ES6+)": siJavascript, "Tailwind CSS": siTailwindcss,
   "Laravel": siLaravel, Python: siPython, PostgreSQL: siPostgresql, MySQL: siMysql,
   MongoDB: siMongodb, Flutter: siFlutter, "React Native": siReact,
-  "Advanced Tooling": sidevelopment tooling, "Git & GitHub": siGit, WordPress: siWordpress,
+  "Git & GitHub": siGit, WordPress: siWordpress,
   Figma: siFigma, Vite: siVite, "TypeScript": siTypescript,
 };
 
