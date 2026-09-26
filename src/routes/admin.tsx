@@ -91,7 +91,7 @@ function AuthCard() {
         ? await supabase.auth.signInWithPassword({ email, password })
         : await supabase.auth.signUp({ email, password, options: { emailRedirectTo: `${window.location.origin}/admin` } });
     setBusy(false);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     if (mode === "up" && !data.session) toast.success("Check your email to confirm your account.");
   };
   return (
@@ -186,7 +186,7 @@ function ProfileEditor() {
   );
   const save = async () => {
     const { error } = await supabase.from("profile").update({ ...p, updated_at: new Date().toISOString() }).eq("id", 1);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     toast.success("Profile saved");
     refresh();
   };
@@ -216,7 +216,7 @@ function ListEditor({ table, blank, fields }: { table: Table; blank: Record<stri
   const add = async () => {
     const sort_order = (rows.at(-1)?.sort_order ?? 0) + 1;
     const { error } = await supabase.from(table).insert({ ...blank, sort_order } as never);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     refresh();
   };
 
@@ -236,14 +236,14 @@ function RowCard({ table, row, fields, onDone }: { table: Table; row: Row; field
   const save = async () => {
     const { id, ...rest } = r;
     const { error } = await supabase.from(table).update(rest as never).eq("id", id);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     toast.success("Saved");
     onDone();
   };
   const del = async () => {
-    if (!confirm("Delete this item?")) return;
+    if (!confirm("Delete this item?")) return undefined;
     const { error } = await supabase.from(table).delete().eq("id", r.id);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     onDone();
   };
 
@@ -268,8 +268,8 @@ function RowCard({ table, row, fields, onDone }: { table: Table; row: Row; field
             )}
             {type === "image" && (
               <div className="flex items-center gap-3">
-                {projectImage({ image_url: v as string | null, url: (r.url as string) ?? null }) && (
-                  <img src={projectImage({ image_url: v as string | null, url: (r.url as string) ?? null })!} alt="" className="h-16 w-28 rounded-xl object-cover object-top" />
+                {projectImage({ image_url: v as string | null, url: (r["url"] as string) ?? null }) && (
+                  <img src={projectImage({ image_url: v as string | null, url: (r["url"] as string) ?? null })!} alt="" className="h-16 w-28 rounded-xl object-cover object-top" />
                 )}
                 <span className={`${btn} cursor-pointer bg-secondary`}>
                   <Upload className="h-4 w-4" />Upload

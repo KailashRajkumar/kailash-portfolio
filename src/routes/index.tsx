@@ -341,7 +341,7 @@ function Contact() {
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
     const r = contactSchema.safeParse(form);
-    if (!r.success) return toast.error(r.error.issues[0].message);
+    if (!r.success) { toast.error(r.error.issues[0]?.message ?? "Invalid input"); return; }
     const text = `Hi Kailash! 👋\n\nName: ${r.data.name}\nEmail: ${r.data.email}\n\n${r.data.message}`;
     window.open(`https://wa.me/${wa}?text=${encodeURIComponent(text)}`, "_blank", "noopener");
     toast.success("Opening WhatsApp — just hit send!");
