@@ -37,8 +37,69 @@ export const Route = createFileRoute("/")({
     ],
   }),
   loader: ({ context }) => context.queryClient.ensureQueryData(profileQuery),
+  pendingMs: 0,
+  pendingComponent: HomeSkeleton,
   component: Index,
 });
+
+function SkeletonBar({ className = "" }: { className?: string }) {
+  return <div className={`animate-pulse rounded-md bg-secondary ${className}`} />;
+}
+
+function HomeSkeleton() {
+  return (
+    <div className="min-h-screen" role="status" aria-label="Loading portfolio">
+      <span className="sr-only">Loading portfolio…</span>
+      <header className="fixed inset-x-0 top-3 z-50 mx-auto flex w-[min(96%,56rem)] items-center justify-between rounded-full border border-border bg-glass px-4 py-2 shadow-card">
+        <SkeletonBar className="h-6 w-24" />
+        <SkeletonBar className="hidden h-6 w-64 sm:block" />
+        <SkeletonBar className="h-9 w-9 rounded-full" />
+      </header>
+      <section className="border-b border-border bg-background pt-28 sm:pt-32">
+        <div className="mx-auto flex max-w-7xl flex-col items-center px-5 pb-8 sm:px-8 lg:min-h-[610px] lg:flex-row-reverse lg:items-end lg:gap-8 lg:pb-0">
+          <SkeletonBar className="mb-5 h-[170px] w-[170px] shrink-0 rounded-full sm:h-[260px] sm:w-[260px] lg:mb-0 lg:h-[min(42vw,520px)] lg:w-[min(42vw,520px)] lg:rounded-none" />
+          <div className="flex w-full max-w-[640px] flex-col items-center gap-4 lg:flex-1 lg:items-start lg:pb-20">
+            <SkeletonBar className="h-5 w-48" />
+            <SkeletonBar className="h-12 w-3/4 sm:h-16" />
+            <SkeletonBar className="h-12 w-2/3 sm:h-16" />
+            <SkeletonBar className="mt-3 h-5 w-full max-w-lg" />
+            <SkeletonBar className="h-5 w-5/6 max-w-lg" />
+            <SkeletonBar className="h-5 w-3/4 max-w-lg" />
+            <div className="mt-4 flex gap-3"><SkeletonBar className="h-12 w-36" /><SkeletonBar className="h-12 w-36" /></div>
+          </div>
+        </div>
+      </section>
+      <PortfolioSkeleton />
+      <ContactSkeleton />
+    </div>
+  );
+}
+
+function SkeletonHeading() {
+  return <div className="mb-10 space-y-3"><SkeletonBar className="h-4 w-28" /><SkeletonBar className="h-10 w-64 max-w-full" /></div>;
+}
+
+function PortfolioSkeleton() {
+  return (
+    <div role="status" aria-label="Loading work, skills and experience">
+      <span className="sr-only">Loading work, skills and experience…</span>
+      <div className="overflow-hidden border-b border-border bg-card py-6">
+        <div className="mx-auto max-w-7xl space-y-4 px-6 sm:px-8"><SkeletonBar className="h-4 w-36" /><div className="flex gap-8 overflow-hidden">{[0, 1, 2, 3, 4].map((i) => <SkeletonBar key={i} className="h-8 w-36 shrink-0" />)}</div></div>
+      </div>
+      <section id="work" className="mx-auto max-w-6xl px-6 py-24">
+        <SkeletonHeading />
+        <div className="mb-8 flex gap-2">{[0, 1, 2].map((i) => <SkeletonBar key={i} className="h-8 w-20 rounded-full" />)}</div>
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">{[0, 1, 2, 3, 4, 5].map((i) => <div key={i} className="overflow-hidden rounded-md border border-border bg-card"><SkeletonBar className="aspect-[16/10] w-full rounded-none" /><div className="space-y-3 p-5"><SkeletonBar className="h-4 w-24" /><SkeletonBar className="h-6 w-3/4" /><SkeletonBar className="h-4 w-full" /><SkeletonBar className="h-4 w-5/6" /></div></div>)}</div>
+      </section>
+      <section id="skills" className="mx-auto max-w-6xl px-6 py-24"><SkeletonHeading /><SkeletonBar className="mb-10 h-5 w-full max-w-2xl" /><div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">{[0, 1, 2, 3, 4, 5].map((i) => <div key={i} className="space-y-5 rounded-3xl border border-border bg-card p-6"><SkeletonBar className="h-5 w-36" /><div className="flex gap-2"><SkeletonBar className="h-8 w-20" /><SkeletonBar className="h-8 w-24" /></div></div>)}</div></section>
+      <section id="experience" className="mx-auto max-w-4xl px-6 py-24"><SkeletonHeading /><div className="space-y-5 border-l border-border pl-8">{[0, 1, 2].map((i) => <div key={i} className="space-y-4 rounded-3xl border border-border bg-card p-6"><SkeletonBar className="h-6 w-2/3" /><SkeletonBar className="h-4 w-36" /><SkeletonBar className="h-4 w-full" /><SkeletonBar className="h-4 w-5/6" /></div>)}</div></section>
+    </div>
+  );
+}
+
+function ContactSkeleton() {
+  return <section className="mx-auto max-w-5xl px-6 py-24" role="status" aria-label="Loading contact"><div className="grid gap-10 rounded-[2rem] border border-border bg-card p-8 sm:p-12 md:grid-cols-2"><div className="space-y-4"><SkeletonBar className="h-4 w-20" /><SkeletonBar className="h-10 w-4/5" /><SkeletonBar className="h-5 w-full" /><SkeletonBar className="h-5 w-3/4" /></div><div className="space-y-3"><SkeletonBar className="h-12 w-full" /><SkeletonBar className="h-12 w-full" /><SkeletonBar className="h-36 w-full" /><SkeletonBar className="h-12 w-full" /></div></div></section>;
+}
 
 const fadeUp = {
   initial: { opacity: 0, y: 24 },
@@ -81,7 +142,7 @@ function Index() {
          <Work projects={data.projects.filter((project) => project.active)} />
          <Skills />
          <ExperienceSection />
-       </> : <div className="mx-auto max-w-6xl px-6 py-16" aria-label="Loading portfolio"><div className="h-8 w-40 animate-pulse rounded bg-secondary" /><div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">{[0, 1, 2].map((i) => <div key={i} className="aspect-[4/3] animate-pulse rounded-md bg-secondary" />)}</div></div>}
+       </> : <PortfolioSkeleton />}
        <Contact />
 
       <footer className="mx-auto flex max-w-5xl flex-col items-center justify-between gap-3 px-6 py-10 text-sm text-muted-foreground sm:flex-row">
