@@ -9,5 +9,5 @@
 - [x] Add project visibility, bulk ordering and bulk deletion in admin; verify signed-in and public views.
 - [x] Show matching loading placeholders throughout the home page.
 - [ ] Back up the completed main branch as v1 after GitHub sync is available (blocked: this builder platform project is not connected to the requested GitHub repository).
-- [ ] Standardize home page gutters and remove unwanted side gaps or overflow across screen widths.
-- [ ] Run a fresh SEO foundations review and share the findings.
+- [x] Standardize home page gutters and remove unwanted side gaps or overflow across screen widths.
+- [x] Run a fresh SEO foundations review and share the findings.
