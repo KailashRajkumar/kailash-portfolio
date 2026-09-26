@@ -27,9 +27,16 @@ jobs:
 
       - run: npm ci
 
-      # Supabase URL + publishable key come from the committed .env
-      # (they are public by design and end up in the browser bundle anyway).
-      - run: npm run build
+      - name: Build
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}
+        run: |
+          if [ -z "$VITE_SUPABASE_URL" ] || [ -z "$VITE_SUPABASE_PUBLISHABLE_KEY" ]; then
+            echo "::error::Set VITE_SUPABASE_URL and VITE_SUPABASE_PUBLISHABLE_KEY in Settings → Secrets and variables → Actions"
+            exit 1
+          fi
+          npm run build
 
       - uses: actions/configure-pages@v5
 

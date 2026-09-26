@@ -30,3 +30,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Local Supabase keys (CI reads them from GitHub Actions secrets)
+.env
+.env.*
+!.env.example
