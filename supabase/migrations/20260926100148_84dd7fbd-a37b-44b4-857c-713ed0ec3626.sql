@@ -1,0 +1,4 @@
+UPDATE public.projects SET title = 'ProFX Summit Dubai', url = 'https://www.profxsummit.com/', description = 'Dubai forex, fintech, blockchain and trading summit with event registration, exhibitor experiences and an admin CRM.', tags = ARRAY['Events','Fintech','Registration','CRM'] WHERE title = 'ProFX Summit & Expos' AND url = 'https://profxsummit.com';
+INSERT INTO public.projects (title,description,category,tags,url,featured,sort_order) VALUES
+('ProFX Expo Africa','Cape Town forex, fintech, blockchain and trading expo with event information and registration.','Events',ARRAY['Expo','Fintech','Events'],'https://profxexpo.com/africa/',false,19),
+('ProFX League','Trading competition platform with free entry and prize challenges.','Fintech',ARRAY['Trading','Competition','Web'],'https://profxleague.com/',false,20);
