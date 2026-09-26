@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
 import { motion } from "motion/react";
 import { useMemo, useState } from "react";
@@ -19,6 +19,7 @@ import {
 import { portfolioQuery, profileQuery, projectImage, type Project } from "@/lib/portfolio";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import portrait from "@/assets/kailash-portrait.png";
 
 const TITLE = "Kailash Rajkumar — Full Stack Developer in Dubai";
@@ -26,7 +27,7 @@ const DESC =
   "Kailash Rajkumar builds business websites, custom CRM platforms, and mobile apps with Flutter and React Native, using secure AI-assisted workflows.";
 
 export const Route = createFileRoute("/")({
-  head: () => ({
+  head: ({ loaderData }) => ({
     meta: [
       { title: TITLE },
       { name: "description", content: DESC },
@@ -34,6 +35,8 @@ export const Route = createFileRoute("/")({
       { property: "og:description", content: DESC },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { property: "og:image", content: loaderData?.avatar_url || "https://kailash-showcase-hub.lovable.app/portrait-share.jpg" },
+      { name: "twitter:image", content: loaderData?.avatar_url || "https://kailash-showcase-hub.lovable.app/portrait-share.jpg" },
     ],
   }),
   loader: ({ context }) => context.queryClient.ensureQueryData(profileQuery),
@@ -56,9 +59,9 @@ function HomeSkeleton() {
         <SkeletonBar className="h-9 w-9 rounded-full" />
       </header>
       <section className="border-b border-border bg-background pt-28 sm:pt-32">
-        <div className="mx-auto flex max-w-[1600px] flex-col items-center px-4 pb-8 sm:px-6 lg:min-h-[610px] lg:flex-row-reverse lg:items-end lg:gap-8 lg:px-8 lg:pb-0">
+         <div className="mx-auto flex max-w-[1600px] flex-col items-center px-4 pb-8 sm:px-6 lg:grid lg:min-h-[610px] lg:grid-cols-2 lg:items-end lg:gap-8 lg:px-8 lg:pb-0">
           <SkeletonBar className="mb-5 h-[170px] w-[170px] shrink-0 rounded-full sm:h-[260px] sm:w-[260px] lg:mb-0 lg:h-[min(42vw,520px)] lg:w-[min(42vw,520px)] lg:rounded-none" />
-          <div className="flex w-full max-w-[640px] flex-col items-center gap-4 lg:flex-1 lg:items-start lg:pb-20">
+           <div className="flex w-full max-w-[640px] flex-col items-center gap-4 lg:col-start-1 lg:row-start-1 lg:max-w-none lg:items-start lg:pb-20">
             <SkeletonBar className="h-5 w-48" />
             <SkeletonBar className="h-12 w-3/4 sm:h-16" />
             <SkeletonBar className="h-12 w-2/3 sm:h-16" />
@@ -157,11 +160,11 @@ function Hero() {
 
   return (
     <section id="top" className="relative isolate overflow-hidden border-b border-border bg-background pt-28 sm:pt-32">
-       <div className="relative mx-auto flex max-w-[1600px] flex-col items-center px-4 pb-8 text-center sm:px-6 lg:min-h-[610px] lg:flex-row-reverse lg:items-end lg:gap-8 lg:px-8 lg:pb-0 lg:text-left">
-         <div className="relative mb-5 h-[170px] w-[170px] shrink-0 overflow-hidden rounded-full border-[6px] border-card shadow-card sm:h-[260px] sm:w-[260px] lg:mb-0 lg:h-[min(42vw,520px)] lg:w-[min(42vw,520px)] lg:rounded-none lg:border-0 lg:shadow-none">
-          <img src={portrait} alt="Kailash Rajkumar" width="400" height="400" fetchPriority="high" className="h-full w-full object-cover object-top lg:object-contain lg:object-bottom" />
+        <div className="relative mx-auto flex max-w-[1600px] flex-col items-center px-4 pb-8 text-center sm:px-6 lg:grid lg:min-h-[610px] lg:grid-cols-2 lg:items-end lg:gap-8 lg:px-8 lg:pb-0 lg:text-left">
+          <div className="relative mb-5 h-[170px] w-[170px] shrink-0 overflow-hidden rounded-full border-[6px] border-card shadow-card sm:h-[260px] sm:w-[260px] lg:col-start-2 lg:row-start-1 lg:mb-0 lg:h-[min(42vw,520px)] lg:w-[min(42vw,520px)] lg:max-w-full lg:justify-self-end lg:rounded-none lg:border-0 lg:shadow-none">
+           <img src={p?.avatar_url || portrait} alt="Kailash Rajkumar" width="400" height="400" fetchPriority="high" className="h-full w-full object-cover object-top lg:object-contain lg:object-bottom" />
          </div>
-         <div className="relative z-10 min-w-0 max-w-[640px] lg:flex-1 lg:pb-20">
+          <div className="relative z-10 min-w-0 max-w-[640px] lg:col-start-1 lg:row-start-1 lg:max-w-none lg:pb-20">
           <p className="mb-3 inline-flex items-center gap-2 text-xs font-bold uppercase text-primary sm:mb-5 sm:text-sm">
             <span className="h-1.5 w-1.5 rounded-full bg-success" />Full-stack developer · Dubai
           </p>
@@ -267,16 +270,14 @@ function Work({ projects }: { projects: Project[] }) {
 
 function ProjectCard({ p, i }: { p: Project; i: number }) {
   const img = projectImage(p);
+  const [open, setOpen] = useState(false);
   return (
-    <motion.a
-      href={p.url ?? undefined}
-      target="_blank"
-      rel="noreferrer"
+    <>
+    <motion.article
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
       transition={{ duration: 0.5, delay: (i % 3) * 0.08 }}
-      whileHover={{ y: -6 }}
        className="group flex min-w-0 flex-col overflow-hidden rounded-md border border-border bg-card shadow-card"
     >
       <div className="relative aspect-[16/10] overflow-hidden bg-secondary">
@@ -293,18 +294,25 @@ function ProjectCard({ p, i }: { p: Project; i: number }) {
             <p className="text-xs font-medium text-primary">{p.category}</p>
             <h3 className="mt-1 text-lg font-semibold tracking-tight">{p.title}</h3>
           </div>
-          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-secondary transition-all group-hover:bg-primary group-hover:text-primary-foreground group-hover:rotate-45">
-            <ArrowUpRight className="h-4 w-4" />
-          </span>
+          {p.url && <Button asChild variant="secondary" size="icon" className="h-9 w-9 shrink-0 rounded-full" title={`Visit ${p.title}`}><a href={p.url} target="_blank" rel="noreferrer" aria-label={`Visit ${p.title}`}><ArrowUpRight className="h-4 w-4" /></a></Button>}
         </div>
-        <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{p.description}</p>
+        <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-muted-foreground">{p.description}</p>
+        {p.description.length > 125 && <Button variant="link" className="h-auto w-fit p-0 text-xs" onClick={() => setOpen(true)}>View more about {p.title}</Button>}
         <div className="mt-auto flex flex-wrap gap-1.5 pt-4">
           {p.tags.map((t) => (
             <span key={t} className="rounded-full bg-accent px-2.5 py-0.5 text-[11px] font-medium text-accent-foreground">{t}</span>
           ))}
         </div>
       </div>
-    </motion.a>
+    </motion.article>
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogContent className="max-h-[85vh] max-w-xl overflow-y-auto rounded-md">
+        <DialogHeader><DialogTitle>{p.title}</DialogTitle><DialogDescription>{p.category}</DialogDescription></DialogHeader>
+        <p className="whitespace-pre-line text-sm leading-relaxed text-foreground">{p.description}</p>
+        {p.url && <Button asChild className="w-fit"><a href={p.url} target="_blank" rel="noreferrer">Visit project <ArrowUpRight className="h-4 w-4" /></a></Button>}
+      </DialogContent>
+    </Dialog>
+    </>
   );
 }
 
