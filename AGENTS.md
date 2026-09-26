@@ -12,3 +12,4 @@
 - Portfolio content (profile, skills, experiences, projects, education) lives in Cloud tables and is edited at /admin-user; never hardcode content. Why: owner updates without code.
 - Project images fall back to live-site screenshots (wp mshots) when no upload; admin uploads go to private "portfolio" bucket with long signed URLs, while bundled captures can use public assets. Why: workspace blocks public buckets.
 - The home portrait is a builder platform Assets pointer while portfolio copy remains in the editable Cloud profile; technology logos map to the editable skill list. Why: keep uploaded media lightweight and owner-maintained content current.
+- Projects have an active flag; public reads exclude inactive projects while admins can manage them. Why: unpublished work must not leak into the public portfolio.

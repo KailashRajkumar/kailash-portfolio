@@ -9,6 +9,17 @@ export type Experience = T["experiences"]["Row"];
 export type Project = T["projects"]["Row"];
 export type Education = T["education"]["Row"];
 
+export async function fetchProfile() {
+  const { data } = await supabase.from("profile").select("*").eq("id", 1).maybeSingle();
+  return data;
+}
+
+export const profileQuery = queryOptions({
+  queryKey: ["profile"],
+  queryFn: fetchProfile,
+  staleTime: 60_000,
+});
+
 export async function fetchPortfolio() {
   const [profile, skills, experiences, projects, education] = await Promise.all([
     supabase.from("profile").select("*").eq("id", 1).maybeSingle(),
@@ -29,6 +40,7 @@ export async function fetchPortfolio() {
 export const portfolioQuery = queryOptions({
   queryKey: ["portfolio"],
   queryFn: fetchPortfolio,
+  staleTime: 60_000,
 });
 
 export function projectImage(p: Pick<Project, "image_url" | "url">) {
