@@ -95,24 +95,24 @@ function Hero() {
 
   return (
     <section id="top" className="relative isolate overflow-hidden border-b border-border bg-background pt-28 sm:pt-32">
-      <div className="relative mx-auto flex min-h-[660px] max-w-7xl flex-col justify-end px-6 pb-14 sm:px-8 lg:min-h-[660px] lg:justify-center lg:pb-20">
-        <motion.div initial={{ opacity: 0, x: 28 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }} className="relative mx-auto mb-5 h-[235px] w-[235px] overflow-hidden rounded-full border-[6px] border-card shadow-card sm:h-[290px] sm:w-[290px] lg:absolute lg:bottom-0 lg:right-0 lg:mb-0 lg:h-[min(44vw,560px)] lg:w-[min(44vw,560px)] lg:rounded-none lg:border-0 lg:shadow-none">
+      <div className="relative mx-auto flex max-w-7xl flex-col justify-end px-6 pb-8 sm:px-8 lg:min-h-[660px] lg:justify-center lg:pb-20">
+        <motion.div initial={{ opacity: 0, x: 28 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }} className="relative mx-auto mb-3 h-[165px] w-[165px] overflow-hidden rounded-full border-[6px] border-card shadow-card sm:h-[290px] sm:w-[290px] lg:absolute lg:bottom-0 lg:right-0 lg:mb-0 lg:h-[min(44vw,560px)] lg:w-[min(44vw,560px)] lg:rounded-none lg:border-0 lg:shadow-none">
           <img src={portrait.url} alt="Kailash Rajkumar" width="400" height="400" fetchPriority="high" className="h-full w-full object-cover object-top lg:object-contain lg:object-bottom" />
         </motion.div>
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.65 }} className="relative z-10 max-w-[640px] lg:w-[57%]">
-          <p className="mb-5 inline-flex items-center gap-2 text-xs font-bold uppercase text-primary sm:text-sm">
+          <p className="mb-3 inline-flex items-center gap-2 text-xs font-bold uppercase text-primary sm:mb-5 sm:text-sm">
             <span className="h-1.5 w-1.5 rounded-full bg-success" />Full-stack developer · Dubai
           </p>
-          <h1 className="font-display text-5xl font-extrabold leading-[1.05] sm:text-7xl lg:text-[clamp(4rem,5.5vw,5.5rem)]">
+          <h1 className="font-display text-[2.65rem] font-extrabold leading-[1.05] sm:text-7xl lg:text-[clamp(4rem,5.5vw,5.5rem)]">
             Kailash <span className="block text-primary">Rajkumar</span>
           </h1>
-          <p className="mt-6 max-w-[580px] text-lg leading-relaxed text-muted-foreground sm:text-xl">
+          <p className="mt-4 max-w-[580px] text-base leading-relaxed text-muted-foreground sm:mt-6 sm:text-xl">
             {p?.tagline}
           </p>
-          <p className="mt-4 max-w-[580px] text-sm leading-relaxed text-foreground/80 sm:text-base">
+          <p className="mt-3 max-w-[580px] text-sm leading-relaxed text-foreground/80 sm:mt-4 sm:text-base">
             From business websites to all-in-one CRMs and Flutter or React Native apps. I use development tooling and development tooling to move faster while keeping client work secure.
           </p>
-          <div className="mt-8 flex flex-wrap items-center gap-3">
+          <div className="mt-5 flex flex-wrap items-center gap-2 sm:mt-8 sm:gap-3">
             <Button asChild size="lg" className="h-12 rounded-md px-6 text-sm font-semibold"><a href="#contact">Start a project <ArrowUpRight className="h-4 w-4" /></a></Button>
             <Button asChild variant="outline" size="lg" className="h-12 rounded-md px-6 text-sm font-semibold"><a href="#work">View my work</a></Button>
             <div className="flex gap-2 sm:ml-2">
