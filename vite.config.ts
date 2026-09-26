@@ -1,15 +1,23 @@
-// @lovable.dev/vite-tanstack-config already includes the following — do NOT add them manually
-// or the app will break with duplicate plugins:
-//   - TanStack devtools (dev-only, first), tanstackStart, viteReact, tailwindcss, tsConfigPaths,
-//     nitro (build-only using cloudflare as a default target), VITE_* env injection, @ path alias,
-//     React/TanStack dedupe, error logger plugins, and sandbox detection (port/host/strictPort).
-// You can pass additional config via defineConfig({ vite: { ... }, etc... }) if needed.
-import { defineConfig } from "@lovable.dev/vite-tanstack-config";
+import { defineConfig } from "vite";
+import { tanstackStart } from "@tanstack/react-start/plugin/vite";
+import viteReact from "@vitejs/plugin-react";
+import tailwindcss from "@tailwindcss/vite";
+
+// Served from https://kailashrajkumar.github.io/kailash-portfolio/ on GitHub Pages.
+// Override with BASE_PATH=/ for local dev or a custom domain.
+const base = process.env["BASE_PATH"] ?? "/kailash-portfolio/";
 
 export default defineConfig({
-  tanstackStart: {
-    // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
-    // nitro/vite builds from this
-    server: { entry: "server" },
-  },
+  base,
+  server: { port: 3000 },
+  plugins: [
+    tailwindcss(),
+    // Static SPA build: the app talks to Supabase directly from the browser,
+    // so no server runtime is needed and the output can be hosted on GitHub Pages.
+    tanstackStart({
+      spa: { enabled: true, prerender: { outputPath: "/index.html" } },
+    }),
+    viteReact(),
+  ],
+  resolve: { tsconfigPaths: true, dedupe: ["react", "react-dom", "@tanstack/react-router"] },
 });

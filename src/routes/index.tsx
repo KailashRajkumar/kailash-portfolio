@@ -19,7 +19,7 @@ import {
 import { portfolioQuery, profileQuery, projectImage, type Project } from "@/lib/portfolio";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { Button } from "@/components/ui/button";
-import portrait from "@/assets/kailash-portrait.png.asset.json";
+import portrait from "@/assets/kailash-portrait.png";
 
 const TITLE = "Kailash Rajkumar — Full Stack Developer in Dubai";
 const DESC =
@@ -159,7 +159,7 @@ function Hero() {
     <section id="top" className="relative isolate overflow-hidden border-b border-border bg-background pt-28 sm:pt-32">
        <div className="relative mx-auto flex max-w-7xl flex-col items-center px-5 pb-8 text-center sm:px-8 lg:min-h-[610px] lg:flex-row-reverse lg:items-end lg:gap-8 lg:pb-0 lg:text-left">
          <div className="relative mb-5 h-[170px] w-[170px] shrink-0 overflow-hidden rounded-full border-[6px] border-card shadow-card sm:h-[260px] sm:w-[260px] lg:mb-0 lg:h-[min(42vw,520px)] lg:w-[min(42vw,520px)] lg:rounded-none lg:border-0 lg:shadow-none">
-          <img src={portrait.url} alt="Kailash Rajkumar" width="400" height="400" fetchPriority="high" className="h-full w-full object-cover object-top lg:object-contain lg:object-bottom" />
+          <img src={portrait} alt="Kailash Rajkumar" width="400" height="400" fetchPriority="high" className="h-full w-full object-cover object-top lg:object-contain lg:object-bottom" />
          </div>
          <div className="relative z-10 min-w-0 max-w-[640px] lg:flex-1 lg:pb-20">
           <p className="mb-3 inline-flex items-center gap-2 text-xs font-bold uppercase text-primary sm:mb-5 sm:text-sm">

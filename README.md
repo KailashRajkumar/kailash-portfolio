@@ -1,43 +1,56 @@
-# Kailash's Creative Hub
+# Kailash Rajkumar — Portfolio
 
-I have a GitHub: https://kailashrajkumar.github.io/kailash-portfolio/
-I need to update this project 
+Personal portfolio of Kailash Rajkumar, full-stack developer in Dubai.
 
-This is my resume and some other projects not yet mentioned 
+**Live:** <https://kailashrajkumar.github.io/kailash-portfolio/>
 
-trillifx.com 
+- Light iOS-style glass UI with a dark-mode toggle
+- Projects, skills, experience and education loaded from Supabase
+- Contact form that opens a pre-filled WhatsApp chat
+- Admin CMS at [`/admin-user`](https://kailashrajkumar.github.io/kailash-portfolio/admin-user) for editing content without code changes
 
-fundedfly.com
+## Tech stack
 
-libertmarkets.org
+React 19 · TanStack Start (SPA mode) + TanStack Router/Query · Tailwind CSS 4 · shadcn/ui · Motion · Supabase (Postgres, Auth, Storage)
 
-BridgexSuite apps client application built with Flutter 
+## Local development
 
-There are more, so my portfolio should have a good name; refer to some best animatic and modern ui portfolios and projects with images and a contact form if someone submits a ping to my WhatsApp directly with that added msg (+971 52 663 5447)
-
-And the portfolio default theme should be light iOS, and add a dark theme switcher 
-
-and create one small polished admin so i can update the portfolio contents, skills , experiences and projects whatever i needed so i dont need to update everytime in code right?
-
-This project was built with [builder platform](https://lovable.dev).
-
-**Live app**: https://kailash-showcase-hub.lovable.app
-
-## Build with builder platform
-
-Continue developing this project in the [builder platform editor](https://lovable.dev/projects/c52ba931-12cb-43f0-8baa-61257d6b52df).
-
-- **Ship faster**: describe what you want to build and builder platform handles the code.
-- **Stay in sync**: every change made in builder platform is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into builder platform, ready for your next prompt.
-
-## Development
-
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
+Requires Node.js 22+.
 
 ```sh
-git clone <this-repository-url>
-cd <repository-name>
-npm i
-npm run dev
+git clone https://github.com/KailashRajkumar/kailash-portfolio.git
+cd kailash-portfolio
+npm install
+npm run dev          # http://localhost:3000
 ```
+
+`npm run build` outputs a static site to `dist/client` (served under `/kailash-portfolio/`).
+Set `BASE_PATH=/` when building for a custom domain.
+
+## Environment
+
+The Supabase URL and **publishable** key live in `.env`. They are safe to commit because they ship in the browser bundle, and row-level security protects the data. Never commit a `service_role` / `sb_secret_` key.
+
+```sh
+VITE_SUPABASE_URL=https://<project-ref>.supabase.co
+VITE_SUPABASE_PUBLISHABLE_KEY=sb_publishable_...
+```
+
+## Deployment
+
+Every push to `main` runs [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml), which builds the site and publishes it to GitHub Pages.
+
+One-time setup: the repo must be public (or on GitHub Pro), and **Settings → Pages → Source** must be set to **GitHub Actions**.
+
+## Database
+
+The schema lives in [`supabase/migrations`](supabase/migrations) and a content snapshot in [`supabase/seed.sql`](supabase/seed.sql).
+
+To stand up a fresh Supabase project:
+
+1. Create a project at [supabase.com](https://supabase.com) (the free tier is enough).
+2. Apply the schema: `npx supabase link --project-ref <ref> && npx supabase db push`, or paste each migration into the SQL editor in order.
+3. Load the content: paste `supabase/seed.sql` into the SQL editor.
+4. Put the new URL and publishable key into `.env`, then push to `main`.
+5. In **Authentication → URL Configuration**, set the Site URL to `https://kailashrajkumar.github.io/kailash-portfolio/`.
+6. Open `/admin-user` and create an account. **The first account created becomes the admin.**

@@ -43,8 +43,16 @@ export const portfolioQuery = queryOptions({
   staleTime: 60_000,
 });
 
+// Bundled images are stored as root paths ("/projects/x.webp"); prefix the
+// deploy base so they resolve under the GitHub Pages subpath.
+export function assetUrl(path: string) {
+  return path.startsWith("/") && !path.startsWith("//")
+    ? `${import.meta.env.BASE_URL}${path.slice(1)}`
+    : path;
+}
+
 export function projectImage(p: Pick<Project, "image_url" | "url">) {
-  if (p.image_url) return p.image_url;
+  if (p.image_url) return assetUrl(p.image_url);
   if (p.url) return `https://s0.wp.com/mshots/v1/${encodeURIComponent(p.url)}?w=1200&h=760`;
   return null;
 }
