@@ -82,7 +82,6 @@ function Index() {
 
       <footer className="mx-auto flex max-w-5xl flex-col items-center justify-between gap-3 px-6 py-10 text-sm text-muted-foreground sm:flex-row">
         <span>© {new Date().getFullYear()} {p?.name}. Crafted in Dubai.</span>
-        <Link to="/admin" className="hover:text-foreground">Admin</Link>
       </footer>
     </div>
   );
