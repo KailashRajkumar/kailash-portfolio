@@ -12,3 +12,4 @@
 - [x] Standardize home page gutters and remove unwanted side gaps or overflow across screen widths.
 - [x] Run a fresh SEO foundations review and share the findings.
 - [x] Tighten the home opening, give project descriptions a detail view, add editable portrait and sharing image, and refresh the favicon.
+- [x] Point shared-link portrait metadata to the publicly reachable image on the GitHub Pages site.
