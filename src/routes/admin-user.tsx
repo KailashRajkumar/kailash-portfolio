@@ -9,6 +9,7 @@ import { portfolioQuery, projectImage, type Profile } from "@/lib/portfolio";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
+import portrait from "@/assets/kailash-portrait.png";
 
 export const Route = createFileRoute("/admin-user")({
   head: () => ({
@@ -196,13 +197,14 @@ async function uploadImage(file: File): Promise<string | null> {
 
 function useRefresh() {
   const qc = useQueryClient();
-  return () => qc.invalidateQueries({ queryKey: ["portfolio"] });
+  return () => { qc.invalidateQueries({ queryKey: ["portfolio"] }); qc.invalidateQueries({ queryKey: ["profile"] }); };
 }
 
 function ProfileEditor() {
   const { data } = useQuery(portfolioQuery);
   const refresh = useRefresh();
   const [p, setP] = useState<Profile | null>(null);
+  const [uploading, setUploading] = useState(false);
   useEffect(() => { if (data?.profile) setP(data.profile); }, [data?.profile]);
   if (!p) return null;
   const f = (k: keyof Profile, label: string, area = false) => (
@@ -223,6 +225,29 @@ function ProfileEditor() {
   };
   return (
     <div className="space-y-4 rounded-3xl bg-card p-6 shadow-card">
+      <div className="flex flex-wrap items-center gap-5 border-b border-border pb-5">
+        <img src={p.avatar_url || portrait} alt="Current home portrait" className="h-24 w-24 rounded-full object-cover object-top" />
+        <div className="space-y-2">
+          <p className="text-sm font-semibold">Home portrait</p>
+          <p className="text-xs text-muted-foreground">Also used when sharing the home page.</p>
+          <div className="flex flex-wrap items-center gap-2">
+            <label className="inline-flex cursor-pointer items-center gap-2 rounded-md bg-secondary px-3 py-2 text-sm font-medium">
+              <Upload className="h-4 w-4" />{uploading ? "Uploading…" : "Choose image"}
+              <input type="file" accept="image/png,image/jpeg,image/webp" className="hidden" disabled={uploading} onChange={async (e) => {
+                const file = e.target.files?.[0];
+                if (!file) return;
+                setUploading(true);
+                const url = await uploadImage(file);
+                if (url) setP((current) => current ? { ...current, avatar_url: url } : current);
+                setUploading(false);
+                e.target.value = "";
+              }} />
+            </label>
+            {p.avatar_url && <Button type="button" variant="ghost" size="sm" onClick={() => setP({ ...p, avatar_url: null })}>Use original</Button>}
+          </div>
+          <p className="text-xs text-muted-foreground">Save profile to make your change live.</p>
+        </div>
+      </div>
       <div className="grid gap-4 sm:grid-cols-2">
         {f("name", "Name")}{f("title", "Title")}{f("location", "Location")}{f("email", "Email")}
         {f("phone", "Phone (display)")}{f("whatsapp", "WhatsApp number (digits, e.g. 971526635447)")}

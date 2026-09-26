@@ -11,3 +11,4 @@
 - [ ] Back up the completed main branch as v1 after GitHub sync is available (blocked: this builder platform project is not connected to the requested GitHub repository).
 - [x] Standardize home page gutters and remove unwanted side gaps or overflow across screen widths.
 - [x] Run a fresh SEO foundations review and share the findings.
+- [x] Tighten the home opening, give project descriptions a detail view, add editable portrait and sharing image, and refresh the favicon.
