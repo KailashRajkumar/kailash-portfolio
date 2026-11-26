@@ -1,7 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
-import { motion } from "motion/react";
-import { useMemo, useState } from "react";
+import {
+  MotionConfig,
+  motion,
+  useScroll,
+  useSpring,
+  useTransform,
+  type Variants,
+} from "motion/react";
+import { useMemo, useRef, useState } from "react";
 import {
   siReact,
   siJavascript,
@@ -23,7 +30,14 @@ import { z } from "zod";
 import { toast } from "sonner";
 import {
   ArrowUpRight,
+  Bot,
   Briefcase,
+  CandlestickChart,
+  Code2,
+  PhoneCall,
+  Plug,
+  Smartphone,
+  Workflow,
   Github,
   GraduationCap,
   Linkedin,
@@ -32,7 +46,13 @@ import {
   MessageCircle,
   Send,
 } from "lucide-react";
-import { portfolioQuery, profileQuery, projectImage, type Project } from "@/lib/portfolio";
+import {
+  portfolioQuery,
+  profileQuery,
+  projectImage,
+  type Project,
+  type Skill,
+} from "@/lib/portfolio";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { Button } from "@/components/ui/button";
 import {
@@ -234,50 +254,77 @@ function Index() {
   const first = p?.name.split(" ")[0] ?? "Kailash";
 
   return (
-    <div className="min-h-screen">
-      <header className="fixed inset-x-0 top-3 z-50 mx-auto flex w-[min(96%,56rem)] items-center justify-between rounded-full border border-border bg-glass px-4 py-2 backdrop-blur-xl shadow-card">
-        <a href="#top" className="text-base font-semibold tracking-tight">
-          {first.toLowerCase()}
-          <span className="text-primary">.dev</span>
-        </a>
-        <nav className="hidden gap-1 sm:flex">
-          {NAV.map(([l, h]) => (
-            <a
-              key={h}
-              href={h}
-              className="rounded-full px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
-            >
-              {l}
-            </a>
-          ))}
-        </nav>
-        <ThemeToggle />
-      </header>
+    <MotionConfig reducedMotion="user">
+      <div className="min-h-screen">
+        <ScrollProgress />
+        <header className="fixed inset-x-0 top-3 z-50 mx-auto flex w-[min(96%,56rem)] items-center justify-between rounded-full border border-border bg-glass px-4 py-2 backdrop-blur-xl shadow-card">
+          <a href="#top" className="text-base font-semibold tracking-tight">
+            {first.toLowerCase()}
+            <span className="text-primary">.dev</span>
+          </a>
+          <nav className="hidden gap-1 sm:flex">
+            {NAV.map(([l, h]) => (
+              <a
+                key={h}
+                href={h}
+                className="rounded-full px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+              >
+                {l}
+              </a>
+            ))}
+          </nav>
+          <ThemeToggle />
+        </header>
 
-      <Hero />
-      {data ? (
-        <>
-          <Marquee items={data.skills.flatMap((s) => s.items)} />
-          <Work projects={data.projects.filter((project) => project.active)} />
-          <Skills />
-          <ExperienceSection />
-        </>
-      ) : (
-        <PortfolioSkeleton />
-      )}
-      <Contact />
+        <Hero />
+        {data ? (
+          <>
+            <Marquee items={data.skills.flatMap((s) => s.items)} />
+            <Work projects={data.projects.filter((project) => project.active)} />
+            <Skills />
+            <ExperienceSection />
+          </>
+        ) : (
+          <PortfolioSkeleton />
+        )}
+        <Contact />
 
-      <footer className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-4 py-10 text-sm text-muted-foreground sm:flex-row sm:px-6 lg:px-8">
-        <span>
-          © {new Date().getFullYear()} {p?.name}. Crafted in Dubai.
-        </span>
-      </footer>
-    </div>
+        <footer className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-4 py-10 text-sm text-muted-foreground sm:flex-row sm:px-6 lg:px-8">
+          <span>
+            © {new Date().getFullYear()} {p?.name}. Crafted in Dubai.
+          </span>
+        </footer>
+      </div>
+    </MotionConfig>
   );
 }
 
+function ScrollProgress() {
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, { stiffness: 120, damping: 30, mass: 0.3 });
+  return (
+    <motion.div
+      aria-hidden
+      style={{ scaleX }}
+      className="fixed inset-x-0 top-0 z-[60] h-1 origin-left bg-gradient-to-r from-primary via-primary/80 to-success"
+    />
+  );
+}
+
+const heroStagger: Variants = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.09, delayChildren: 0.05 } },
+};
+const heroItem: Variants = {
+  hidden: { opacity: 0, y: 18 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } },
+};
+
 function Hero() {
   const { data: p } = useSuspenseQuery(profileQuery);
+  const { scrollY } = useScroll();
+  const portraitY = useTransform(scrollY, [0, 700], [0, 70]);
+  const textY = useTransform(scrollY, [0, 700], [0, -40]);
 
   return (
     <section
@@ -285,7 +332,10 @@ function Hero() {
       className="relative isolate overflow-hidden border-b border-border bg-background pt-28 sm:pt-32"
     >
       <div className="relative mx-auto flex max-w-[1600px] flex-col items-center px-4 pb-8 text-center sm:px-6 lg:grid lg:min-h-[610px] lg:grid-cols-2 lg:items-end lg:gap-0 lg:px-12 lg:pb-0 lg:text-left xl:px-16">
-        <div className="relative mb-5 h-[170px] w-[170px] shrink-0 overflow-hidden rounded-full border-[6px] border-card shadow-card sm:h-[260px] sm:w-[260px] lg:col-start-2 lg:row-start-1 lg:mb-0 lg:h-[min(42vw,520px)] lg:w-[min(42vw,520px)] lg:max-w-full lg:justify-self-end lg:rounded-none lg:border-0 lg:shadow-none">
+        <motion.div
+          style={{ y: portraitY }}
+          className="relative mb-5 h-[170px] w-[170px] shrink-0 overflow-hidden rounded-full border-[6px] border-card shadow-card sm:h-[260px] sm:w-[260px] lg:col-start-2 lg:row-start-1 lg:mb-0 lg:h-[min(42vw,520px)] lg:w-[min(42vw,520px)] lg:max-w-full lg:justify-self-end lg:rounded-none lg:border-0 lg:shadow-none"
+        >
           <img
             src={p?.avatar_url || portrait}
             alt="Kailash Rajkumar"
@@ -294,24 +344,45 @@ function Hero() {
             fetchPriority="high"
             className="h-full w-full object-cover object-top lg:object-contain lg:object-bottom"
           />
-        </div>
-        <div className="relative z-10 min-w-0 max-w-[640px] lg:col-start-1 lg:row-start-1 lg:max-w-none lg:pb-20">
-          <p className="mb-3 inline-flex items-center gap-2 text-xs font-bold uppercase text-primary sm:mb-5 sm:text-sm">
+        </motion.div>
+        <motion.div
+          style={{ y: textY }}
+          variants={heroStagger}
+          initial="hidden"
+          animate="show"
+          className="relative z-10 min-w-0 max-w-[640px] lg:col-start-1 lg:row-start-1 lg:max-w-none lg:pb-20"
+        >
+          <motion.p
+            variants={heroItem}
+            className="mb-3 inline-flex items-center gap-2 text-xs font-bold uppercase text-primary sm:mb-5 sm:text-sm"
+          >
             <span className="h-1.5 w-1.5 rounded-full bg-success" />
             Full-stack developer · Dubai
-          </p>
-          <h1 className="font-display text-4xl font-extrabold leading-[1.08] sm:text-6xl lg:text-6xl xl:text-7xl">
+          </motion.p>
+          <motion.h1
+            variants={heroItem}
+            className="font-display text-4xl font-extrabold leading-[1.08] sm:text-6xl lg:text-6xl xl:text-7xl"
+          >
             Kailash <span className="block text-primary">Rajkumar</span>
-          </h1>
-          <p className="mt-4 max-w-[580px] text-base leading-relaxed text-muted-foreground sm:mt-6 sm:text-xl">
+          </motion.h1>
+          <motion.p
+            variants={heroItem}
+            className="mt-4 max-w-[580px] text-base leading-relaxed text-muted-foreground sm:mt-6 sm:text-xl"
+          >
             {p?.tagline}
-          </p>
-          <p className="mt-3 max-w-[580px] text-sm leading-relaxed text-foreground/80 sm:mt-4 sm:text-base">
+          </motion.p>
+          <motion.p
+            variants={heroItem}
+            className="mt-3 max-w-[580px] text-sm leading-relaxed text-foreground/80 sm:mt-4 sm:text-base"
+          >
             From business websites to all-in-one CRMs and Flutter or React Native apps. I use
             powerful AI models, technical knowledge, and integrations to move faster while keeping
             client work secure.
-          </p>
-          <div className="mt-5 flex flex-wrap items-center justify-center gap-2 sm:mt-8 sm:gap-3 lg:justify-start">
+          </motion.p>
+          <motion.div
+            variants={heroItem}
+            className="mt-5 flex flex-wrap items-center justify-center gap-2 sm:mt-8 sm:gap-3 lg:justify-start"
+          >
             <Button asChild size="lg" className="h-12 rounded-md px-6 text-sm font-semibold">
               <a href="#contact">
                 Start a project <ArrowUpRight className="h-4 w-4" />
@@ -342,8 +413,8 @@ function Hero() {
                 </IconLink>
               )}
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   );
@@ -434,8 +505,23 @@ function Marquee({ items }: { items: string[] }) {
 
 function SectionHead({ eyebrow, title }: { eyebrow: string; title: string }) {
   return (
-    <motion.div {...fadeUp} className="mb-10">
-      <p className="text-sm font-semibold text-primary">{eyebrow}</p>
+    <motion.div
+      initial={{ opacity: 0, y: 28, filter: "blur(8px)" }}
+      whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+      viewport={{ once: true, margin: "-80px" }}
+      transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+      className="mb-10"
+    >
+      <p className="flex items-center gap-3 text-sm font-semibold text-primary">
+        <motion.span
+          initial={{ scaleX: 0 }}
+          whileInView={{ scaleX: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+          className="h-px w-10 origin-left bg-primary"
+        />
+        {eyebrow}
+      </p>
       <h2 className="mt-2 text-4xl font-bold tracking-tight sm:text-5xl">{title}</h2>
     </motion.div>
   );
@@ -484,7 +570,8 @@ function ProjectCard({ p, i }: { p: Project; i: number }) {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-60px" }}
         transition={{ duration: 0.5, delay: (i % 3) * 0.08 }}
-        className="group flex min-w-0 flex-col overflow-hidden rounded-md border border-border bg-card shadow-card"
+        whileHover={{ y: -6 }}
+        className="group flex min-w-0 flex-col overflow-hidden rounded-md border border-border bg-card shadow-card transition-shadow duration-300 hover:shadow-xl"
       >
         <div className="relative aspect-[16/10] overflow-hidden bg-secondary">
           {img && (
@@ -570,9 +657,32 @@ function ProjectCard({ p, i }: { p: Project; i: number }) {
   );
 }
 
+const EASE = [0.22, 1, 0.36, 1] as const;
+
+const gridStagger: Variants = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.08 } },
+};
+const popIn: Variants = {
+  hidden: { opacity: 0, y: 28, scale: 0.96 },
+  show: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.55, ease: EASE } },
+};
+const chipStagger: Variants = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.03, delayChildren: 0.15 } },
+};
+const chipIn: Variants = {
+  hidden: { opacity: 0, y: 8 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.3 } },
+};
+
+const isIntegrationGroup = (s: Skill) => /integrat/i.test(s.category);
+
 function Skills() {
   const { data } = useQuery(portfolioQuery);
   if (!data) return null;
+  const integrations = data.skills.find(isIntegrationGroup);
+  const groups = data.skills.filter((s) => !isIntegrationGroup(s));
   return (
     <section id="skills" className="mx-auto max-w-[1600px] px-4 py-24 sm:px-6 lg:px-8">
       <SectionHead eyebrow="Toolkit" title="What I work with." />
@@ -582,50 +692,213 @@ function Skills() {
       >
         {data.profile?.summary}
       </motion.p>
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {data.skills.map((s, i) => (
+      {integrations && integrations.items.length > 0 && <Integrations group={integrations} />}
+      <motion.div
+        variants={gridStagger}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, margin: "-60px" }}
+        className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+      >
+        {groups.map((s) => (
           <motion.div
             key={s.id}
-            {...fadeUp}
-            transition={{ ...fadeUp.transition, delay: (i % 3) * 0.08 }}
-            className="rounded-3xl border border-border bg-card p-6 shadow-card"
+            variants={popIn}
+            whileHover={{ y: -4 }}
+            className="rounded-3xl border border-border bg-card p-6 shadow-card transition-colors duration-300 hover:border-primary/40"
           >
             <h3 className="font-semibold">{s.category}</h3>
-            <div className="mt-4 flex flex-wrap gap-2">
+            <motion.div variants={chipStagger} className="mt-4 flex flex-wrap gap-2">
               {s.items.map((it) => (
-                <span key={it} className="rounded-xl bg-secondary px-3 py-1.5 text-sm">
+                <motion.span
+                  key={it}
+                  variants={chipIn}
+                  className="rounded-xl bg-secondary px-3 py-1.5 text-sm transition-colors hover:bg-primary hover:text-primary-foreground"
+                >
                   {it}
-                </span>
+                </motion.span>
               ))}
-            </div>
+            </motion.div>
           </motion.div>
         ))}
-      </div>
+      </motion.div>
     </section>
+  );
+}
+
+/** Picks an icon for an integration item by keyword. */
+function integrationIcon(label: string) {
+  const l = label.toLowerCase();
+  if (/trad|mt5|ctrader|broker/.test(l) && /autom/.test(l)) return Workflow;
+  if (/trad|mt5|ctrader|broker/.test(l)) return CandlestickChart;
+  if (/mail|smtp/.test(l)) return Mail;
+  if (/\bai\b|agent|llm|gpt/.test(l)) return Bot;
+  if (/voip|dial|call|phone|sip/.test(l)) return PhoneCall;
+  if (/mobile|flutter|app/.test(l)) return Smartphone;
+  if (/autom|workflow/.test(l)) return Workflow;
+  if (/api/.test(l)) return Code2;
+  return Plug;
+}
+
+/** "Label — detail" (also accepts " - " or ": "). */
+function splitItem(item: string) {
+  const m = item.match(/^(.+?)\s+(?:—|–|-)\s+(.+)$/) ?? item.match(/^(.+?):\s+(.+)$/);
+  return m ? { label: m[1] ?? item, detail: m[2] ?? "" } : { label: item, detail: "" };
+}
+
+// Stretch the last card so the final row never has gaps (grid: 1/2/3/4 cols).
+const SPAN = {
+  sm: ["", "sm:col-span-1", "sm:col-span-2"],
+  lg: ["", "lg:col-span-1", "lg:col-span-2", "lg:col-span-3"],
+  xl: ["", "xl:col-span-1", "xl:col-span-2", "xl:col-span-3", "xl:col-span-4"],
+} as const;
+function lastSpan(n: number) {
+  const span = (cols: number) => (n % cols === 0 ? 1 : cols - (n % cols) + 1);
+  return `${SPAN.sm[span(2)]} ${SPAN.lg[span(3)]} ${SPAN.xl[span(4)]}`;
+}
+
+function Integrations({ group }: { group: Skill }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 32 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-80px" }}
+      transition={{ duration: 0.7, ease: EASE }}
+      className="relative mb-6 overflow-hidden rounded-[2rem] border border-primary/20 bg-card p-6 shadow-card sm:p-8"
+    >
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-primary/15 blur-3xl"
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -bottom-24 -left-16 h-64 w-64 rounded-full bg-success/10 blur-3xl"
+      />
+      <div className="relative flex flex-wrap items-center gap-3">
+        <span className="grid h-10 w-10 place-items-center rounded-2xl bg-primary text-primary-foreground">
+          <Plug className="h-5 w-5" />
+        </span>
+        <h3 className="text-xl font-semibold tracking-tight sm:text-2xl">{group.category}</h3>
+      </div>
+      <motion.ul
+        variants={gridStagger}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, margin: "-40px" }}
+        className="relative mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+      >
+        {group.items.map((item, index) => {
+          const { label, detail } = splitItem(item);
+          const isLast = index === group.items.length - 1;
+          const Icon = integrationIcon(label);
+          return (
+            <motion.li
+              key={item}
+              variants={popIn}
+              whileHover={{ y: -4 }}
+              className={`${isLast ? lastSpan(group.items.length) : ""} group flex gap-3 rounded-2xl border border-border bg-background/70 p-4 backdrop-blur transition-colors duration-300 hover:border-primary/50 hover:bg-background`}
+            >
+              <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary transition-all duration-300 group-hover:rotate-[-8deg] group-hover:scale-110 group-hover:bg-primary group-hover:text-primary-foreground">
+                <Icon className="h-5 w-5" />
+              </span>
+              <span className="min-w-0">
+                <span className="block font-semibold leading-snug">{label}</span>
+                {detail && (
+                  <span className="mt-0.5 block text-sm leading-snug text-muted-foreground">
+                    {detail}
+                  </span>
+                )}
+              </span>
+            </motion.li>
+          );
+        })}
+      </motion.ul>
+    </motion.div>
+  );
+}
+
+const bulletStagger: Variants = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.06, delayChildren: 0.25 } },
+};
+const bulletIn: Variants = {
+  hidden: { opacity: 0, x: 12 },
+  show: { opacity: 1, x: 0, transition: { duration: 0.35, ease: EASE } },
+};
+
+const timelineCard: Variants = {
+  hidden: { opacity: 0, x: 48 },
+  show: { opacity: 1, x: 0, transition: { duration: 0.65, ease: EASE } },
+};
+const timelineDot: Variants = {
+  hidden: { scale: 0 },
+  show: { scale: 1, transition: { type: "spring", stiffness: 400, damping: 18, delay: 0.15 } },
+};
+
+function TimelineItem({ dot, children }: { dot: React.ReactNode; children: React.ReactNode }) {
+  return (
+    <motion.div
+      variants={timelineCard}
+      initial="hidden"
+      whileInView="show"
+      viewport={{ once: true, margin: "-80px" }}
+      className="group relative"
+    >
+      <motion.span
+        variants={timelineDot}
+        className="absolute -left-[42px] top-7 z-10 flex h-5 w-5 items-center justify-center"
+      >
+        <span className="absolute inset-0 rounded-full bg-primary/40 opacity-0 group-hover:animate-ping group-hover:opacity-100" />
+        <span className="relative flex h-5 w-5 items-center justify-center rounded-full transition-transform duration-300 group-hover:scale-125">
+          {dot}
+        </span>
+      </motion.span>
+      <div className="relative rounded-3xl border border-border bg-card p-6 shadow-card transition-all duration-300 group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:border-primary/40 group-hover:shadow-xl">
+        <span
+          aria-hidden
+          className="absolute -left-2 top-8 h-4 w-4 rotate-45 border-b border-l border-border bg-card transition-colors duration-300 group-hover:border-primary/40"
+        />
+        {children}
+      </div>
+    </motion.div>
   );
 }
 
 function ExperienceSection() {
   const { data } = useQuery(portfolioQuery);
+  const lineRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: lineRef,
+    offset: ["start 80%", "end 60%"],
+  });
+  const fill = useSpring(scrollYProgress, { stiffness: 90, damping: 25, mass: 0.4 });
   if (!data) return null;
   return (
     <section id="experience" className="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
       <SectionHead eyebrow="Journey" title="Experience." />
-      <div className="relative space-y-5 border-l border-border pl-8">
+      <div ref={lineRef} className="relative space-y-6 pl-8">
+        <span aria-hidden className="absolute bottom-0 left-0 top-0 w-px bg-border" />
+        <motion.span
+          aria-hidden
+          style={{ scaleY: fill }}
+          className="absolute bottom-0 left-0 top-0 w-0.5 -translate-x-[0.5px] origin-top rounded-full bg-gradient-to-b from-primary via-primary to-success"
+        />
         {data.experiences.map((e) => (
-          <motion.div
+          <TimelineItem
             key={e.id}
-            {...fadeUp}
-            className="relative rounded-3xl border border-border bg-card p-6 shadow-card"
+            dot={
+              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-primary ring-4 ring-background">
+                <Briefcase className="h-2.5 w-2.5 text-primary-foreground" />
+              </span>
+            }
           >
-            <span className="absolute -left-[42px] top-7 flex h-5 w-5 items-center justify-center rounded-full bg-primary ring-4 ring-background">
-              <Briefcase className="h-2.5 w-2.5 text-primary-foreground" />
-            </span>
             <div className="flex flex-wrap items-baseline justify-between gap-2">
               <h3 className="text-lg font-semibold">
                 {e.role} · <span className="text-primary">{e.company}</span>
               </h3>
-              <span className="text-sm text-muted-foreground">{e.period}</span>
+              <span className="rounded-full bg-secondary px-3 py-1 text-xs font-medium text-muted-foreground transition-colors duration-300 group-hover:bg-primary/10 group-hover:text-primary">
+                {e.period}
+              </span>
             </div>
             {e.location && (
               <p className="mt-1 flex items-center gap-1 text-xs text-muted-foreground">
@@ -633,31 +906,39 @@ function ExperienceSection() {
                 {e.location}
               </p>
             )}
-            <ul className="mt-3 space-y-1.5 text-sm text-muted-foreground">
+            <motion.ul
+              variants={bulletStagger}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true, margin: "-60px" }}
+              className="mt-3 space-y-1.5 text-sm text-muted-foreground"
+            >
               {e.bullets.map((b, i) => (
-                <li key={i} className="flex gap-2">
-                  <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-primary" />
+                <motion.li key={i} variants={bulletIn} className="flex gap-2">
+                  <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-primary transition-transform duration-300 group-hover:scale-150" />
                   {b}
-                </li>
+                </motion.li>
               ))}
-            </ul>
-          </motion.div>
+            </motion.ul>
+          </TimelineItem>
         ))}
         {data.education.map((ed) => (
-          <motion.div
+          <TimelineItem
             key={ed.id}
-            {...fadeUp}
-            className="relative rounded-3xl border border-border bg-card p-6 shadow-card"
+            dot={
+              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-foreground ring-4 ring-background">
+                <GraduationCap className="h-2.5 w-2.5 text-background" />
+              </span>
+            }
           >
-            <span className="absolute -left-[42px] top-7 flex h-5 w-5 items-center justify-center rounded-full bg-foreground ring-4 ring-background">
-              <GraduationCap className="h-2.5 w-2.5 text-background" />
-            </span>
             <div className="flex flex-wrap items-baseline justify-between gap-2">
               <h3 className="font-semibold">{ed.degree}</h3>
-              <span className="text-sm text-muted-foreground">{ed.year}</span>
+              <span className="rounded-full bg-secondary px-3 py-1 text-xs font-medium text-muted-foreground transition-colors duration-300 group-hover:bg-primary/10 group-hover:text-primary">
+                {ed.year}
+              </span>
             </div>
             <p className="mt-1 text-sm text-muted-foreground">{ed.school}</p>
-          </motion.div>
+          </TimelineItem>
         ))}
       </div>
     </section>

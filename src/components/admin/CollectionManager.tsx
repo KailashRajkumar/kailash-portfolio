@@ -70,7 +70,7 @@ export function CollectionManager<T extends Base, D extends object>({
       <div className="flex flex-wrap items-center justify-between gap-3">
         <p className="text-sm text-muted-foreground">
           {rows.length
-            ? `${rows.length} ${noun}${rows.length === 1 ? "" : "s"} · drag to reorder, click to edit`
+            ? `${rows.length} ${rows.length === 1 ? noun : pluralize(noun)} · drag to reorder, click to edit`
             : null}
         </p>
         <Button onClick={() => setEditing("new")}>
@@ -82,7 +82,7 @@ export function CollectionManager<T extends Base, D extends object>({
       {!rows.length ? (
         <EmptyState
           icon={icon}
-          title={`No ${noun}s yet`}
+          title={`No ${pluralize(noun)} yet`}
           description={emptyDescription}
           action={
             <Button onClick={() => setEditing("new")}>
@@ -292,4 +292,8 @@ function IconBtn({
 
 function capitalize(s: string) {
   return s.charAt(0).toUpperCase() + s.slice(1);
+}
+
+function pluralize(s: string) {
+  return /[^aeiou]y$/.test(s) ? `${s.slice(0, -1)}ies` : `${s}s`;
 }

@@ -137,7 +137,7 @@ export function ExperienceManager() {
       })}
       titleOf={(r) => `${r.role}${r.company ? ` at ${r.company}` : ""}`}
       renderCard={(r) => (
-        <div className="flex gap-3">
+        <div className="flex items-center gap-3">
           <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-primary/10 text-sm font-bold text-primary">
             {(r.company || r.role || "?").charAt(0).toUpperCase()}
           </div>
@@ -251,7 +251,7 @@ export function EducationManager() {
       })}
       titleOf={(r) => r.degree || "Untitled"}
       renderCard={(r) => (
-        <div className="flex gap-3">
+        <div className="flex items-center gap-3">
           <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary">
             <GraduationCap className="h-5 w-5" />
           </div>
